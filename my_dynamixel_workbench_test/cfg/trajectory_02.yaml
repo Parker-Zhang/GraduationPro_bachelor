@@ -1,0 +1,15 @@
+joint:
+  names: [zero]
+trajectory:
+#  index: [wp1,wp2,wp3]
+  index: [wp1]
+  wp1:
+    pos: [0]
+    time_from_start: 0.5
+#  wp2:
+#    pos: [-1.57]
+#    time_from_start: 3.0
+#  wp3:
+#    pos: [-1.57,0,0]
+#    time_from_start: 9.0
+  
