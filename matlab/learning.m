@@ -1,4 +1,4 @@
-%% å›¾è®ºæœ€çŸ­è·¯å¾„
+%% Í¼ÂÛ×î¶ÌÂ·¾¶
 clear all
 A=[0 1 0 2 0 0 ;
       0 0 3 4 0 0 ;
@@ -10,21 +10,21 @@ A=[0 1 0 2 0 0 ;
   TR=shortestpathtree(G,1);
   p = plot(G,'EdgeLabel',G.Edges.Weight);
   highlight(p,TR,'EdgeColor','r');
-%%   inputå­¦ä¹ 
+%%   inputÑ§Ï°
 clear all
 C = input('Enter a num\n');
 F = (C*1.8)+32;
-fprintf('åæ°æ¸©åº¦=%.2f\n',F);
-%% ç»˜åˆ¶æ•£ç‚¹å›¾å›¾
+fprintf('»ªÊÏÎÂ¶È=%.2f\n',F);
+%% »æÖÆÉ¢µãÍ¼Í¼
 clc
 clear all
-% ç”»æŠ˜çº¿å›¾ ç‚¹åæ ‡ï¼Œç‚¹é¡ºåº xlabel ylabel title color LineStyle legendï¼ˆå›¾ä¾‹ï¼‰
-% hold on hold off figureï¼ˆåˆ›å»ºçª—å£ï¼‰subplotï¼ˆç»™çª—å£åˆ’åˆ†ï¼‰
-% ç»˜åˆ¶æ•£ç‚¹å›¾
+% »­ÕÛÏßÍ¼ µã×ø±ê£¬µãË³Ğò xlabel ylabel title color LineStyle legend£¨Í¼Àı£©
+% hold on hold off figure£¨´´½¨´°¿Ú£©subplot£¨¸ø´°¿Ú»®·Ö£©
+% »æÖÆÉ¢µãÍ¼
 N=100;
-x=2*rand(1,N)-1;%1 è¡Œ N åˆ—
+x=2*rand(1,N)-1;%1 ĞĞ N ÁĞ
 y=2*rand(1,N)-1;
-% scatter(x,y,'filled');%'filled' è¡¨ç¤ºå¡«å……
+% scatter(x,y,'filled');%'filled' ±íÊ¾Ìî³ä
 in = x.^2 +y.^2 <= 1;
 out = ~in;
 hold on
@@ -36,44 +36,44 @@ theta =0:0.01:2*pi;
 circle_x = cos(theta);
 circle_y = sin(theta);
 plot(circle_x,circle_y,'color','black','linewidth',2);
-%% ç»˜åˆ¶é¥¼å›¾
+%% »æÖÆ±ıÍ¼
 clc
 clear all
-%  é¥¼çš„åå­—
-labels = {'å¼ ä¸‰','æå››','ç‹äº”','èµµå…­'};
-% é¥¼çš„å¤§å°
+%  ±ıµÄÃû×Ö
+labels = {'ÕÅÈı','ÀîËÄ','ÍõÎå','ÕÔÁù'};
+% ±ıµÄ´óĞ¡
 X =[50 100 150 200];
-% å“ªä¸€å—é¥¼è¦åˆ†ç¦»å‡ºæ¥
+% ÄÄÒ»¿é±ıÒª·ÖÀë³öÀ´
 explode = [0 0 0 1];
-% ç”»é¥¼å›¾
+% »­±ıÍ¼
 pie(X,explode,labels);
-title('æœ¬æœˆä¸šç»©');
-%% å›¾å½¢å¥æŸ„
+title('±¾ÔÂÒµ¼¨');
+%% Í¼ĞÎ¾ä±ú
 t=0:0.01:10;
 y=sin(t);
-hd=plot(t,y);%å¾—åˆ°çš„æ˜¯çº¿çš„å¥æŸ„
-% é€šè¿‡setå‡½æ•°å¯ä»¥ä¿®æ”¹å›¾å½¢çš„å±æ€§
-h = gcf ;%å¾—åˆ°å½“å‰å›¾åƒçš„å¥æŸ„
-%% åŠ¨ç”»åˆæ­¥
+hd=plot(t,y);%µÃµ½µÄÊÇÏßµÄ¾ä±ú
+% Í¨¹ısetº¯Êı¿ÉÒÔĞŞ¸ÄÍ¼ĞÎµÄÊôĞÔ
+h = gcf ;%µÃµ½µ±Ç°Í¼ÏñµÄ¾ä±ú
+%% ¶¯»­³õ²½
 clear
 clc
 t = -pi:0.01:pi;
 h = plot(0,0);
  axis([-4,4,-1,1]);
-%  æ¯è¿‡1/25ç§’åˆ·æ–°ä¸€æ¬¡æ•°æ®
+%  Ã¿¹ı1/25ÃëË¢ĞÂÒ»´ÎÊı¾İ
 fs = 1/25;
-% æ–¹æ³•ä¸€ï¼šä½¿ç”¨pauseå‡½æ•°ï¼Œä½†æ˜¯åŠ¨ç”»çš„æ—¶å€™ä¸èƒ½æ“ä½œ
+% ·½·¨Ò»£ºÊ¹ÓÃpauseº¯Êı£¬µ«ÊÇ¶¯»­µÄÊ±ºò²»ÄÜ²Ù×÷
 % for i = 1:5:length(t)
-%      set(h, 'xdata' , t(1:i), 'ydata', sin(t(1:i)));%æ›´æ–°å¥æŸ„çš„æ•°æ®
-%      pause(fs);%ç»˜åˆ¶æœŸé—´ä¸èƒ½è¿›è¡Œå…¶ä»–æ“ä½œ
+%      set(h, 'xdata' , t(1:i), 'ydata', sin(t(1:i)));%¸üĞÂ¾ä±úµÄÊı¾İ
+%      pause(fs);%»æÖÆÆÚ¼ä²»ÄÜ½øĞĞÆäËû²Ù×÷
 % end
 
-%æ–¹æ³•äºŒã€é‡‡ç”¨å®šæ—¶å™¨
+%·½·¨¶ş¡¢²ÉÓÃ¶¨Ê±Æ÷
 global i
 i=1;
 timer1=timer('Period',fs,'TimerFcn',{@callback,h,t},'ExecutionMode','fixedSpacing');
 start(timer1);
-%% è’™ç‰¹å¡æ´›æ³•æ±‚PIåŠ¨ç”»
+%% ÃÉÌØ¿¨Âå·¨ÇóPI¶¯»­
 clear
 clc
 R=10;
@@ -92,10 +92,10 @@ axis('square');
 timer1=timer('Period',fs,'TimerFcn',{@callback,R,N},'ExecutionMode','fixedSpacing');
 hold on
 start(timer1);
-%% æœºå™¨äººå·¥å…·ç®±ï¼›ä»¿çœŸè®­ç»ƒ
+%% »úÆ÷ÈË¹¤¾ßÏä£»·ÂÕæÑµÁ·
 clear
 clc
-% å…ˆç”»ä¸€ä¸ªåœ¨åŸç‚¹çš„åæ ‡ç³»
+% ÏÈ»­Ò»¸öÔÚÔ­µãµÄ×ø±êÏµ
 T1 = SE2(1,2,30*pi/180);
 axis([0 5 0 5]);
 axis square;
@@ -106,54 +106,54 @@ grid on;
  T2 = SE2(2,1,0);
 trplot2(T2,'frame','2','color','r');
 
-% å·¦ä¹˜ å’Œ å³ä¹˜çš„åŒºåˆ†
-T3 = T1*T2; %å…ˆè¿›è¡ŒT1å˜æ¢ï¼Œå†è¿›è¡ŒT2å˜æ¢
+% ×ó³Ë ºÍ ÓÒ³ËµÄÇø·Ö
+T3 = T1*T2; %ÏÈ½øĞĞT1±ä»»£¬ÔÙ½øĞĞT2±ä»»
 trplot2(T3,'frame','3','color','g');
 
-T4 = T2*T1; %å…ˆè¿›è¡ŒT2å˜æ¢ï¼Œå†è¿›è¡ŒT1å˜æ¢
+T4 = T2*T1; %ÏÈ½øĞĞT2±ä»»£¬ÔÙ½øĞĞT1±ä»»
 trplot2(T4,'frame','4','color','c');
 
 P = [3;2];
 plot_point(P,'*');
-P1 = double(inv(T1)) * [P; 1]; %å¾—åˆ°Påœ¨åæ ‡ç³»1çš„ä½å§¿
-h2e (P1);%hè¡¨ç¤ºé½æ¬¡å½¢å¼ï¼›eè¡¨ç¤ºæ¬§å‡ é‡Œå¾—ç‚¹ e2h
-%  homtrans(double(inv(T1)),P); %ç†è§£ä¸ºå…¶æ¬¡å˜æ¢çš„å‡½æ•° æ›´ç®€æ´çš„è¡¨è¾¾å¼
+P1 = double(inv(T1)) * [P; 1]; %µÃµ½PÔÚ×ø±êÏµ1µÄÎ»×Ë
+h2e (P1);%h±íÊ¾Æë´ÎĞÎÊ½£»e±íÊ¾Å·¼¸ÀïµÃµã e2h
+%  homtrans(double(inv(T1)),P); %Àí½âÎªÆä´Î±ä»»µÄº¯Êı ¸ü¼ò½àµÄ±í´ïÊ½
 
-%  ä¸‰ç»´ç©ºé—´æè¿°
- R = rotx(pi/2);%è¡¨ç¤ºç»•xè½´æ—‹è½¬pi/2
+%  ÈıÎ¬¿Õ¼äÃèÊö
+ R = rotx(pi/2);%±íÊ¾ÈÆxÖáĞı×ªpi/2
  trplot(R);
- tranimate(R);%åˆ¶ä½œæ—‹è½¬åŠ¨ç”»,å°†ä¸–ç•Œåæ ‡ç³»æ—‹è½¬åˆ°æŒ‡å®šåæ ‡ç³»è¿‡ç¨‹
- R = rotx(pi/2)*roty(pi/2);%ä¸–ç•Œåæ ‡ç³»å…ˆç»•xè½´è½¬åŠ¨90Â°å†ç»•yè½´è½¬åŠ¨90Â°ï¼›
+ tranimate(R);%ÖÆ×÷Ğı×ª¶¯»­,½«ÊÀ½ç×ø±êÏµĞı×ªµ½Ö¸¶¨×ø±êÏµ¹ı³Ì
+ R = rotx(pi/2)*roty(pi/2);%ÊÀ½ç×ø±êÏµÏÈÈÆxÖá×ª¶¯90¡ãÔÙÈÆyÖá×ª¶¯90¡ã£»
  
-%  æ¬§æ‹‰è§’è¡¨ç¤ºæ–¹æ³• æ¬§æ‹‰è§’è¡¨ç¤ºçš„ç»•ä¸€ä¸ªç‰¹å®šçš„è½´æ—‹è½¬ä¸¤æ¬¡ï¼Œä½†ä¸æ˜¯é‡å¤æ—‹è½¬
-% ZYZå¼
+%  Å·À­½Ç±íÊ¾·½·¨ Å·À­½Ç±íÊ¾µÄÈÆÒ»¸öÌØ¶¨µÄÖáĞı×ªÁ½´Î£¬µ«²»ÊÇÖØ¸´Ğı×ª
+% ZYZÊ½
 R = rotz(0.1)*roty(0.2)*rotz(0.3);
-R = eul2r(0.1,0.2,0.3);%ä¸Šå¼ä¸è¯¥å¼çš„ç»“æœç›¸åŒ
-% é€†è§£é—®é¢˜ï¼šæ‰¾åˆ°ç»™å®šæ—‹è½¬çŸ©é˜µçš„æ¬§æ‹‰è§’,åå‡½æ•°çš„å…³ç³»
+R = eul2r(0.1,0.2,0.3);%ÉÏÊ½Óë¸ÃÊ½µÄ½á¹ûÏàÍ¬
+% Äæ½âÎÊÌâ£ºÕÒµ½¸ø¶¨Ğı×ª¾ØÕóµÄÅ·À­½Ç,·´º¯ÊıµÄ¹ØÏµ
 gamma = tr2eul(R);
-% ä¸­é—´æœ‰åè§£ï¼Œè¿˜æœ‰å¥‡å¼‚å€¼çš„é—®é¢˜ï¼Œæˆ‘è¿˜æ²¡ææ¸…æ¥š
-% å¥‡å¼‚ç‚¹ï¼›æ—‹è½¬è½´ç›¸äº’å¹³è¡Œ
-% éœ€è¦ä»”ç»†çœ‹
+% ÖĞ¼äÓĞ·´½â£¬»¹ÓĞÆæÒìÖµµÄÎÊÌâ£¬ÎÒ»¹Ã»¸ãÇå³ş
+% ÆæÒìµã£»Ğı×ªÖáÏà»¥Æ½ĞĞ
+% ĞèÒª×ĞÏ¸¿´
 
-% RPYè§’ å¡å°”ä¸¹è§’ï¼›å¯¹äºèˆªç©ºå’Œè½¦è¾†è€Œè¨€ï¼Œxè½´ä¸ºå‰è¿›æ–¹å‘ï¼Œzè½´ç«–ç›´å‘ä¸‹ï¼Œyè½´æŒ‡å‘å³æ‰‹æ–¹å‘
-% Roll:æ¨ªæ»š Pitch: ä¿¯ä»° Yaw: åèˆª(èˆªå‘) 
+% RPY½Ç ¿¨¶ûµ¤½Ç£»¶ÔÓÚº½¿ÕºÍ³µÁ¾¶øÑÔ£¬xÖáÎªÇ°½ø·½Ïò£¬zÖáÊúÖ±ÏòÏÂ£¬yÖáÖ¸ÏòÓÒÊÖ·½Ïò
+% Roll:ºá¹ö Pitch: ¸©Ñö Yaw: Æ«º½(º½Ïò) 
 R = rpy2r(0.1,0.2,0.3);
 gamma = tr2rpy(R);
-%% æ¯•è®¾ä»¿çœŸéƒ¨åˆ† 2D è¾“å…¥è§’åº¦ï¼Œç¡®å®šæ†é•¿
-% å…ˆç”»ä¸€ä¸ªåæ ‡ç³»{O}
+%% ±ÏÉè·ÂÕæ²¿·Ö 2D ÊäÈë½Ç¶È£¬È·¶¨¸Ë³¤
+% ÏÈ»­Ò»¸ö×ø±êÏµ{O}
 clear 
 clc
 T0 =SE2(0,0,0);
 trplot(T0,'frame','O');
 hold on;
 grid on;
-% ç¡®å®šåæ ‡ç³» C
+% È·¶¨×ø±êÏµ C
 theta =-pi/6;
 L =3;
 axis([-(L+2) L -(L+2) L]);
 % T = SE2(0,0,pi/2);
 C = [0 ;-L ];
-B = [1/3*C,2/3*C];%æˆ‘çš„Bçš„åæ ‡åº”è¯¥ç›¸å¯¹Cåæ ‡ç³»è€Œè¨€çš„
+B = [1/3*C,2/3*C];%ÎÒµÄBµÄ×ø±êÓ¦¸ÃÏà¶ÔC×ø±êÏµ¶øÑÔµÄ
 A =[-1 1;1 -1];
 R = double(SE2(0,0,theta));
 C2 =homtrans(R,C);
@@ -182,27 +182,27 @@ hold off;
 ML =B2-A;
 L1=norm(ML(:,1))
 L2=norm(ML(:,2))
-%% 3D ä»¿çœŸ å¯¹äº3ç»´æˆ‘ä»¬è¦æƒ³è±¡ä¸€ä¸ªåœ°çƒä»ª
-% è¿˜æ²¡æœ‰é™ä½ æ‰€ä»¥æ— æ³•å»ºç«‹å·¥ä½œç©ºé—´ ä¸€ä¸ªalpha beta gammaå†³å®š
-% è¿˜æœ‰å®é™…èƒ½å¤Ÿåˆ°è¾¾çš„ç©ºé—´
+%% 3D ·ÂÕæ ¶ÔÓÚ3Î¬ÎÒÃÇÒªÏëÏóÒ»¸öµØÇòÒÇ
+% »¹Ã»ÓĞÏŞÎ» ËùÒÔÎŞ·¨½¨Á¢¹¤×÷¿Õ¼ä Ò»¸öalpha beta gamma¾ö¶¨
+% »¹ÓĞÊµ¼ÊÄÜ¹»µ½´ïµÄ¿Õ¼ä
 clear 
 clc
-% å˜é‡å£°æ˜
-alpha =0; %å‰åä¼¸å±• æ­£
-beta =pi/4;%æ²¿é¢ˆè‚©ä¸Šä¸‹ä¼¸å±• è´Ÿ
-gamma =0;% è´Ÿ
+% ±äÁ¿ÉùÃ÷
+alpha =0; %Ç°ºóÉìÕ¹ Õı
+beta =pi/4;%ÑØ¾±¼çÉÏÏÂÉìÕ¹ ¸º
+gamma =0;% ¸º
 L = 10;
 H =8;
 C0 = [0;0;-L];
 A1 = [0 5 H];
 F = [-10 0 H-3];
-%F A2 A3 A4 A5...åœ¨åæ ‡ç³»Oçš„è¡¨ç¤º
+%F A2 A3 A4 A5...ÔÚ×ø±êÏµOµÄ±íÊ¾
 A =[F        ;
         0 5 H;
         0 5 H;
         0 -5 H;
         0 -5 H];
- %B1 B2 B3 B4 B5 åœ¨åæ ‡ç³»Cçš„è¡¨ç¤º
+ %B1 B2 B3 B4 B5 ÔÚ×ø±êÏµCµÄ±íÊ¾
 cB = [2 3 -2;
           1 2 2;
           2 -2 -2;
@@ -211,32 +211,32 @@ cB = [2 3 -2;
 dalpha = pi/200;
 for k=1:1:50
 alpha = alpha +dalpha;
-% è®¡ç®—éƒ¨åˆ†
+% ¼ÆËã²¿·Ö
 cBT=cB';
 AT=A';
 % R = rpy2r(alpha,beta,gamma);
 R = trotz(gamma)*troty(beta)*trotx(alpha);
-C1 = homtrans(R,C0);%æ—‹è½¬é¡ºåº Zï¼ŒYï¼ŒX
+C1 = homtrans(R,C0);%Ğı×ªË³Ğò Z£¬Y£¬X
 T0=[ eye(3,3) ,zeros(3,1);zeros(1,3),1];
-% T1è¡¨ç¤ºä¸­å¿ƒçš„ä½å§¿ å³ AcT
+% T1±íÊ¾ÖĞĞÄµÄÎ»×Ë ¼´ AcT
 T1 = transl(C1')*trotz(gamma)*troty(beta)*trotx(alpha);
 BT = homtrans(T1,cBT);
  
-%  è®¡ç®—ç»³çº¿çš„é•¿åº¦ A1B1
+%  ¼ÆËãÉşÏßµÄ³¤¶È A1B1
 ML = AT-BT;
 stringL=zeros(1,5);
     for i=1:1:5
         stringL(1,i)=norm(ML(:,i));
     end
 stringL
-%  ç”»å›¾éƒ¨åˆ†
+%  »­Í¼²¿·Ö
 trplot(T0,'frame','O','color','r');
 axis([-1.2*L 1.2*L -1.2*L 1.2*L  -1.2*L 1.2*L ]);
 hold on
 trplot(T1,'frame','C','color','b');
  plot3(AT(1,:)',AT(2,:)',AT(3,:)','o','color','b','MarkerSize',10,'MarkerFaceColor','g');
  plot3(BT(1,:)',BT(2,:)',BT(3,:)','o','color','b','MarkerSize',10,'MarkerFaceColor','g');
-%  è¿›è¡Œè¿çº¿ Ai å’ŒBiè¿çº¿
+%  ½øĞĞÁ¬Ïß Ai ºÍBiÁ¬Ïß
 ABT =[AT BT];
 point_nAB=length(ABT);
 LinkAB=zeros(point_nAB,point_nAB);
@@ -245,16 +245,16 @@ for i=1:1:point_nAB/2
     LinkAB(point_nAB/2+i,i)=1;
 end
 gplot23D(LinkAB,ABT');
-% ç»˜åˆ¶Biä¹‹é—´çš„è¿çº¿
+% »æÖÆBiÖ®¼äµÄÁ¬Ïß
 LinkB = ones(5,5);
 LinkB = LinkB  -eye(5,5);
 LinkB(4,1)=0;
 LinkB(1,4)=0;
 gplot23D(LinkB,BT');
-% è¿æ¥OCä¸¤ç‚¹
+% Á¬½ÓOCÁ½µã
 OC =[[0;0;0] C1];
 plot3(OC(1,:)',OC(2,:)',OC(3,:)','color','k','LineWidth',4);
-%è¿æ¥ A1Fä¸¤ç‚¹
+%Á¬½Ó A1FÁ½µã
 A1F=[A1' F'];
 plot3(A1F(1,:)',A1F(2,:)',A1F(3,:)');
 hold off
@@ -263,67 +263,86 @@ drawnow();
 hold off
 view([-1,-1.3,0.5]);
 end 
-% % æå–çŸ©é˜µTä¸­çš„æ—‹è½¬éƒ¨åˆ†
+% % ÌáÈ¡¾ØÕóTÖĞµÄĞı×ª²¿·Ö
 % R2=t2r(T1);
-% % æå–çŸ©é˜µTä¸­çš„å¹³ç§»éƒ¨åˆ†
+% % ÌáÈ¡¾ØÕóTÖĞµÄÆ½ÒÆ²¿·Ö
 % trans1(T)'
-% % åè§£å¾—åˆ°å§¿æ€è§’ ; NaN not a num 
+% % ·´½âµÃµ½×ËÌ¬½Ç ; NaN not a num 
 % gamma=tr2rpy(R2);
 
-%% æ§åˆ¶è½¨è¿¹ç”Ÿæˆ
-% è¿˜æ²¡æœ‰é™ä½ æ‰€ä»¥æ— æ³•å»ºç«‹å·¥ä½œç©ºé—´ ä¸€ä¸ªalpha beta gammaå†³å®š
-clear 
+%% ¿ØÖÆ¹ì¼£Éú³É
+% »¹Ã»ÓĞÏŞÎ» ËùÒÔÎŞ·¨½¨Á¢¹¤×÷¿Õ¼ä Ò»¸öalpha beta gamma¾ö¶¨
+clear
 clc
-% å˜é‡å£°æ˜
-alpha =0; %å‰åä¼¸å±• æ­£
-beta =pi/4;%æ²¿é¢ˆè‚©ä¸Šä¸‹ä¼¸å±• è´Ÿ
-gamma =0;% è´Ÿ
+% ±äÁ¿ÉùÃ÷
+alpha =0; %Ç°ºóÉìÕ¹ Õı
+beta =pi/4;%ÑØ¾±¼çÉÏÏÂÉìÕ¹ ¸º
+% beta = 0;
+gamma =0;% ¸º
 L = 10;
 H =8;
+% L = 200;
 C0 = [0;0;-L];
 A1 = [0 5 H];
 F = [-10 0 H-3];
-%F A2 A3 A4 A5...åœ¨åæ ‡ç³»Oçš„è¡¨ç¤º A1 A4 A5 ä¸€è¾¹ A2 A3ä¸€è¾¹ 
+
+%F A2 A3 A4 A5...ÔÚ×ø±êÏµOµÄ±íÊ¾ A1 A4 A5 Ò»±ß A2 A3Ò»±ß 
 A =[F        ;
         0 -5 H;
         0 -5 H;
         0 5 H;
         0 5 H];
- %B1 B2 B3 B4 B5 åœ¨åæ ‡ç³»Cçš„è¡¨ç¤ºï¼Œ
- %ç§»åŠ¨å¹³å°åº•é¢çš„3ä¸ªç‚¹ä¸º B1 B3 B5
+% A1 =[-34.74 -28.83 203.55];
+% F = [-145.29 -15.18 142.66];
+%F A2 A3 A4 A5...ÔÚ×ø±êÏµOµÄ±íÊ¾ A1 A4 A5 Ò»±ß A2 A3Ò»±ß 
+% A =[F        ;
+%         -34.74 -35.84 138.18;%A4
+%         -34.74 -34.81 171.72;
+%         -34.74 154.77 190.51;%A2
+%        -34.74 162.62 153.22]%A3];%A5
+ %B1 B2 B3 B4 B5 ÔÚ×ø±êÏµCµÄ±íÊ¾£¬
+ %ÒÆ¶¯Æ½Ì¨µ×ÃæµÄ3¸öµãÎª B1 B3 B5
 cB = [-2 0 -2;
           1 -2 2;
           2 -2 -2;
           1 2 2;
           2 3 -2 ];%2 3 -2
+%  cB=15*cB;
+
+
 Tspan=50;
 dalpha = pi/4/Tspan;
+% dalpha = 0;
 stringL=zeros(Tspan,5);
 for k=1:1:Tspan
 alpha = alpha +dalpha;
-% è®¡ç®—éƒ¨åˆ†
+% ¼ÆËã²¿·Ö
 cBT=cB';
 AT=A';
-% R = rpy2r(alpha,beta,gamma);
 R = trotz(gamma)*troty(beta)*trotx(alpha);
-C1 = homtrans(R,C0);%æ—‹è½¬é¡ºåº Zï¼ŒYï¼ŒX
+C1 = homtrans(R,C0);%Ğı×ªË³Ğò Z£¬Y£¬X
 T0=[ eye(3,3) ,zeros(3,1);zeros(1,3),1];
-% T1è¡¨ç¤ºä¸­å¿ƒçš„ä½å§¿ å³ AcT
+% T1±íÊ¾ÖĞĞÄµÄÎ»×Ë ¼´ AcT
 T1 = transl(C1')*trotz(gamma)*troty(beta)*trotx(alpha);
 BT = homtrans(T1,cBT);
-%  è®¡ç®—ç»³çº¿çš„é•¿åº¦ A1B1
+%  ¼ÆËãÉşÏßµÄ³¤¶È A1B1
 ML = AT-BT;
 for i=1:1:5
     stringL(k,i)=norm(ML(:,i));
 end
-%  ç”»å›¾éƒ¨åˆ†
+
+%  »­Í¼²¿·Ö
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('Time (s)') 
+ylabel('Displacement ') 
 trplot(T0,'frame','O','color','r');
 axis([-1.2*L 1.2*L -1.2*L 1.2*L  -1.2*L 1.2*L ]);
 hold on
 trplot(T1,'frame','C','color','b');
+% plot3(A1(1),A1(2),A1(3),'o','color','b','MarkerSize',10,'MarkerFaceColor','g');
  plot3(AT(1,:)',AT(2,:)',AT(3,:)','o','color','b','MarkerSize',10,'MarkerFaceColor','g');
  plot3(BT(1,:)',BT(2,:)',BT(3,:)','o','color','b','MarkerSize',10,'MarkerFaceColor','g');
-%  è¿›è¡Œè¿çº¿ Ai å’ŒBiè¿çº¿
+%  ½øĞĞÁ¬Ïß Ai ºÍBiÁ¬Ïß
 ABT =[AT BT];
 point_nAB=length(ABT);
 LinkAB=zeros(point_nAB,point_nAB);
@@ -332,16 +351,16 @@ for i=1:1:point_nAB/2
     LinkAB(point_nAB/2+i,i)=1;
 end
 gplot23D(LinkAB,ABT');
-% ç»˜åˆ¶Biä¹‹é—´çš„è¿çº¿
+% »æÖÆBiÖ®¼äµÄÁ¬Ïß
 LinkB = ones(5,5);
 LinkB = LinkB  -eye(5,5);
 LinkB(3,4)=0;%1 4
 LinkB(4,3)=0;
 gplot23D(LinkB,BT');
-% è¿æ¥OCä¸¤ç‚¹
+% Á¬½ÓOCÁ½µã
 OC =[[0;0;0] C1];
 plot3(OC(1,:)',OC(2,:)',OC(3,:)','color','k','LineWidth',4);
-%è¿æ¥ A1Fä¸¤ç‚¹
+%Á¬½Ó A1FÁ½µã
 A1F=[A1' F'];
 plot3(A1F(1,:)',A1F(2,:)',A1F(3,:)');
 hold off
@@ -353,16 +372,33 @@ end
 
 stringL
 t=1:1:Tspan;
-figure(100),plot(t,stringL);title('å„ç»³çº¿é•¿åº¦éšæ—¶é—´å˜åŒ–å›¾');
+figure(100),
+plot(t,stringL,'linewidth',1.1);
+axis([1,50,10,24]);
+set(gca,'linewidth',1.1,'fontsize',14,'fontname','ËÎÌå')
+xlabel('Ê±¼ä/\fontname{Times New Roman}unit');
+ylabel('Éş³¤/\fontname{Times New Roman}unit');
+legend('FB1', 'A2B2','A3B3','A4B4','A5B5','fontname','Times');
+set (gca,'position',[0.1,0.12,0.7,0.8] );
+title('¸÷ÉşÏß³¤¶ÈËæÊ±¼ä±ä»¯Í¼');
+
 motorR = 2;
-%ä»¥åˆå§‹çŠ¶æ€çš„é•¿åº¦ä¸ºåŸºå‡†
+%ÒÔ³õÊ¼×´Ì¬µÄ³¤¶ÈÎª»ù×¼
 motorTheta=zeros(Tspan,5);
 for i=1:1:Tspan
     motorTheta(i,:)=(stringL(i,:)-stringL(1,:))/2*180/pi;
+%     motorTheta(i,:)=(stringL(i,:)-stringL(1,:))/2;
 end
-motorTheta
-figure(200),plot(t,motorTheta);title('å„èˆµæœºè½¬è§’éšæ—¶é—´å˜åŒ–å›¾');
-xlswrite('trajactory.xls',[motorTheta;stringL]);
+% motorTheta
+figure(200),
+plot(t,motorTheta,'linewidth',1.1);
+set(gca,'linewidth',1.1,'fontsize',14,'fontname','ËÎÌå');
+title('¸÷¶æ»ú×ª½ÇËæÊ±¼ä±ä»¯Í¼');
+xlabel('Ê±¼ä/\fontname{Times New Roman}unit');
+ylabel('¶æ»ú×ª½Ç/\fontname{Times New Roman}¡ã');
+legend('A1', 'A2','A3','A4','A5','fontname','Times');
+set (gca,'position',[0.1,0.12,0.7,0.8] );
+xlswrite('trajactory.xlsx',[motorTheta;stringL]);
 
 
 

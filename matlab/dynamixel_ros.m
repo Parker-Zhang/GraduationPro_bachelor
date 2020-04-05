@@ -23,12 +23,71 @@ rosmsg show my_dynamixel_workbench_test/dxl_state
 %% create a subscriber for /turtle1/pose topic
 scanner = rossubscriber('/dxl_state_topic')
 %% dealwith data dxl_state topic
-clc
-clear
-filename='data/04.txt';
+filename='data/10.txt';
 [time,radian,velocity,current]=textread(filename,'%*s %f %*s %d %*s %f %*s %f','delimiter',':');
 t=1:1:length(radian);
+figure(1),
 plot(t,radian')
+
+%% 05 .txt 绘制K=0.03 K=0.04 01.txt K=0.05
+% 绘制K = 0.03；曲线
+filename='data/05.txt';
+[time,radian,velocity,current]=textread(filename,'%*s %f %*s %d %*s %f %*s %f','delimiter',':');
+t=1:1:length(radian);
+a1 = zeros(1,512-435+1);
+b1 = 1000*ones(1,600-513+1);
+dr = [a1 b1];
+y1 = radian(435:600,1);
+dt = 1:length(dr);
+figure(200),
+plot(0.1*dt,dr,'linewidth',1.1,'linestyle','--','color','r')
+hold on,
+ plot(0.1*dt,y1','linewidth',1.1,'color',[0,0.7,0.9]);
+ b2 = 17*ones(1,length(a1));
+ y2 = radian(849:end,1);
+ y2 = [b2 y2'];
+ t=1:length(y2);
+ plot(0.1*t,y2,'linewidth',1.1);
+ filename='data/01.txt';
+[time,radian,velocity,current]=textread(filename,'%*s %f %*s %d %*s %f %*s %f','delimiter',':');
+t=1:1:length(radian);
+ b3 = 2*ones(1,length(a1));
+ y3 = radian(152:250,1);
+ y3 = [b3 y3'];
+ t = 1:length(y3);
+plot(0.1*t,y3,'linewidth',1.1); 
+axis([7, 14, 0 1400]) 
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('时间(s)','fontname','宋体') 
+% ylabel('Displacement ') 
+ylabel('位移','fontname','宋体')
+legend('desired','Kp=0.03','Kp=0.04','Kp=0.05')
+%% 09.txt p=0.03 d=0.05;p=0.04 d=0.05
+filename='data/09.txt';
+[time,radian,velocity,current]=textread(filename,'%*s %f %*s %d %*s %f %*s %f','delimiter',':');
+t=1:1:length(radian);
+ a1 =  -6*ones(1,134-65+1);
+ b1 = 1000*ones(1,200-135+1);
+dr = [a1 b1]; 
+t=1:length(dr);
+figure(100)
+y1 =radian(65:200,1);
+plot(0.1*t,dr,'linewidth',1.1,'linestyle','--','color','r')
+hold on,
+plot(0.1*t,y1','linewidth',1.1,'color',[0.4940 0.1840 0.5560])
+a2 = 21*ones(1,length(a1));
+y2 = radian(477:550,1);
+y2 =[a2 y2'];
+t=1:length(y2);
+plot(0.1*t,y2,'linewidth',1.1)
+axis([6, 14, 0 1400]) 
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('时间(s)','fontname','宋体') 
+% ylabel('Displacement ') 
+ylabel('位移','fontname','宋体')
+legend('desired','Kp=0.03,Kd=0.05','Kp=0.04,Kd=0.05')
+
+
 %% dealwith data dynamixel_statelist topic
 % uint: current:2.69[mA]  velocity:0.229[rev/min]  position:1[pulse] 0.088掳/Value
 clc
