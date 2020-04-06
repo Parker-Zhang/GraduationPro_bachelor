@@ -49,6 +49,24 @@ bool MyOperator::getTrajectoryInfo(const std::string yaml_file,
             jnt_tra_point.positions.push_back(wp_num["pos"][size].as<double>());
             ROS_INFO("NO.way point : %s, position : %f", index_.c_str(), wp_num["pos"][size].as<double>());
         }
+        if (wp_num["vel"] != NULL)
+        {
+            // 速度的size也要和pos一样
+            for (uint8_t size=0;size<wp_num["vel"].size();size++)
+            {
+                jnt_tra_point.velocities.push_back(wp_num["vel"][size].as<double>());
+                ROS_INFO("NO.way point : %s, velocity : %f", index_.c_str(), wp_num["vel"][size].as<double>());
+            }
+        }
+        if (wp_num["acc"] != NULL)
+        {
+            //加速度的size也要和pos一样
+            for (uint8_t size=0;size<wp_num["acc"].size();size++)
+            {
+                jnt_tra_point.accelerations.push_back(wp_num["acc"][size].as<double>());
+                ROS_INFO("NO.way point : %s, acceleration : %f", index_.c_str(), wp_num["acc"][size].as<double>());
+            }
+        }
         if (wp_num["time_from_start"] == NULL)
         {
             ROS_ERROR("Please check time_from_start. It must be set time_from_start each waypoint");

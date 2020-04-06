@@ -34,9 +34,9 @@ MyDynamixelController::MyDynamixelController()
     jnt_tra_ = new JointTrajectory;
     
     goal_position = 0;
-    p_gain = 0.06;//0.1
-    i_gain = 0.001;//0.01
-    d_gain = 0.1;
+    p_gain = 0.0325;//0.1
+    i_gain = 0;//0.01
+    d_gain = 0.05;
     is_moving_ = false;
 }
 
@@ -403,6 +403,7 @@ void MyDynamixelController::trajectoryMsgCallback(const trajectory_msgs::JointTr
 void MyDynamixelController::initPublisher()
 {
   dynamixel_state_list_pub_ = priv_node_handle_.advertise<dynamixel_workbench_msgs::DynamixelStateList>("dynamixel_state", 100);
+  desired_tra_pub_ = priv_node_handle_.advertise<my_dynamixel_workbench_test::desired_trajectory>("desired_tra",100);
 }
 
 //自定义service callback
@@ -468,34 +469,41 @@ void MyDynamixelController::writeCallback(const ros::TimerEvent&){
 
   if (is_moving_==true)
   {
-      //通过关节名 查找对应的关节的舵机序号 存储在id_array中，与下面重复
-    //通过下面这种方法，可以实现注册多个舵机，但控制几个舵机的情况
+    // 存储序号 循环names
+    // 循环id_array index 0:2
+    // id_array[index](1 2 0)==(uint8_t)dynamixel_[joint](0 1 2)
+    // true break;
+    // cnt记录的是输入轨迹中定义的舵机的数量
+    // index_array[cnt++]=index (2 0 1)
+    // for cnt
+    // index_cnt =0 gol_pos(index_arry[index_cnt]=2)=
+    for (auto const& dxl:dynamixel_)
+    {
+      id_array[id_cnt++] = (uint8_t)dxl.second;//1 2 0
+    }
+    uint8_t index_array[dynamixel_.size()];
+    uint8_t cnt = 0;
     for (auto const& joint:jnt_tra_msg_->joint_names)
     {
-      id_array[id_cnt] = (uint8_t)dynamixel_[joint];
-      id_cnt++;
+      uint8_t index = 0;
+      for (;index<id_cnt;index++)
+      {
+        if(id_array[index]==(uint8_t)dynamixel_[joint])
+        {
+          break;
+        }
+      }
+      index_array[cnt++]=index;
     }
-  //输入的关节轨迹的位置信息通过pid控制器转化成目标电流 id_cnt 舵机的数量
-    //ROS_INFO("moving!");
-    for (uint8_t index = 0; index < id_cnt; index++)
+    for (uint8_t index = 0; index < cnt; index++)
     {
       //如果输入的是弧度制先转换成整数值,默认的是弧度制
       dynamixel_position[index] = dxl_wb_->convertRadian2Value(id_array[index], jnt_tra_msg_->points[point_cnt].positions.at(index));
-      goal_pos[index]=dynamixel_position[index];
-      //dynamixel_current[index] = pidController(dynamixel_position[index],index);
-      //ROS_INFO("id:%d,goal position:%d  index:%d",id_array[index],goal_pos[index],index);
+      goal_pos[index_array[index]]=dynamixel_position[index];
+      //ROS_INFO("id:%d ,goal position:%d  index:%d",id_array[index],goal_pos[index],index);
       //ROS_INFO("id:%d,goal radian:%f",id_array[index],jnt_tra_msg_->points[point_cnt].positions.at(index));
       position_cnt++;
-    }        
-    
-    /*
-    //写入目标电流
-    result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_CURRENT, id_array, id_cnt, dynamixel_current, 1, &log);
-    if (result == false)
-    {
-      ROS_ERROR("%s", log);
-    }
-    */
+    }    
     //写入目标位置
     /*
     result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_POSITION, id_array, id_cnt, dynamixel_position, 1, &log);
@@ -526,7 +534,7 @@ void MyDynamixelController::writeCallback(const ros::TimerEvent&){
   else{
       for (auto const& dxl:dynamixel_)
     {
-      id_array[id_cnt++] = (uint8_t)dxl.second;
+      id_array[id_cnt++] = (uint8_t)dxl.second;//1 2 0
     }
   }
 
@@ -534,19 +542,32 @@ void MyDynamixelController::writeCallback(const ros::TimerEvent&){
 /*
 
 */
+  d_tra.id.clear();
+  d_tra.goal_position.clear();
   for (uint8_t index = 0; index < id_cnt; index++)
   {
+      //d_tra->id[index]=id_array[index];
+      // 如果是在运动的状态：id_arry=[0 1 2],goal_position按顺序对应的是 0 1 2
+      // 如果是运动结束状态：id_arry=[1 2 0],goal_position按顺序对应的是 0 1 2 ...
+      //，这时候给goal_position赋值的顺序应该变成 1 2 0 
+      // 如果是在运动的状态：id_arry=[10 11 22],goal_position按顺序对应的是 0 1 2
+      //如果是运动结束状态：id_arry=[11 22 10],goal_position按顺序对应的是 1 2 0 ...
+      // 需要保证id_arry的顺序和goal_position的顺序一致
+      // 但是最后写的话，goal_position顺序是没变的，但是id_arry的顺序改变了，所以导致最后位置改变了
+      d_tra.id.push_back(id_array[index]);
+      d_tra.goal_position.push_back(goal_pos[index]);
+      //d_tra->goal_position[index]=goal_pos[index];
       dynamixel_current[index] = pidController(goal_pos[index],id_array[index]);
+      //ROS_INFO("id:%d ,goal position:%d  index:%d",id_array[index],goal_pos[index],index);
       //ROS_INFO("id:%d ,goal_current:%d index:%d",id_array[index],dynamixel_current[index],index);
   }
   //写入目标电流
   result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_CURRENT, id_array, id_cnt, dynamixel_current, 1, &log);
+  //result = true;
   if (result == false)
   {
     ROS_ERROR("%s", log);
   }
-
- 
 }
 
 void MyDynamixelController::readCallback(const ros::TimerEvent&){
@@ -648,10 +669,30 @@ void MyDynamixelController::readCallback(const ros::TimerEvent&){
 
 void MyDynamixelController::publishCallback(const ros::TimerEvent&)
 {
+  //uint8_t id_array[dynamixel_.size()];
+  //uint8_t id_cnt = 0;
+  //for (auto const& dxl:dynamixel_)
+  //{
+  //  id_array[id_cnt++] = (uint8_t)dxl.second;
+  //}
+  desired_tra_pub_.publish(d_tra);
   dynamixel_state_list_pub_.publish(dynamixel_state_list_);
 }
 
 // load trajectory
+void MyDynamixelController::initGoalPos(){
+  uint8_t id_array[dynamixel_.size()];
+  uint8_t id_cnt = 0;
+  for (auto const& dxl:dynamixel_)
+  {
+    id_array[id_cnt++] = (uint8_t)dxl.second;//1 2 0
+  }
+  for (uint8_t index = 0; index < id_cnt; index++)
+  {
+    goal_pos[index] = 2048;
+  }
+}
+
 bool MyDynamixelController::getTrajectoryInfo(const std::string yaml_file, trajectory_msgs::JointTrajectory *jnt_tra_msg)
 {
   YAML::Node file;
@@ -979,13 +1020,15 @@ int main(int argc,char ** argv)
      
     //ros service that you can change goal_position
     dynamixel_controller.initServer();
-    dynamixel_controller.initSubscriber();
-    dynamixel_controller.initPublisher();
+
     int limit_current = 50;
     //ros::ServiceServer changeGoalPositonSrv = node_handle.advertiseService("changePosition",&changePositionCallback);
     dynamixel_controller.setLimitCurrent(limit_current);
 
-    ///*
+   // /*
+    dynamixel_controller.initSubscriber();
+    dynamixel_controller.initPublisher();
+    dynamixel_controller.initGoalPos();
     ROS_INFO("write_period:%f",dynamixel_controller.getWritePeriod());
     ros::Timer read_timer = node_handle.createTimer(ros::Duration(dynamixel_controller.getReadPeriod()),
                                            &MyDynamixelController::readCallback, &dynamixel_controller);
@@ -997,7 +1040,7 @@ int main(int argc,char ** argv)
     //dynamixel_controller.TrajectoryInfoInit();
     //sleep(5);
     ros::spin();
-    //*/
+   // */
 /*
     //TEST CODE 2020.2.29
     uint8_t ID = 0 ;
@@ -1052,7 +1095,8 @@ int main(int argc,char ** argv)
       ros::spinOnce();
     }
     dxl_wb->itemWrite(ID,"Goal_Current",0);
-    return 0;*/
+    return 0;
+    */
 }
 /*
 void recordDxlState2Txt(my_dynamixel_workbench_test::dxl_state state_msg){

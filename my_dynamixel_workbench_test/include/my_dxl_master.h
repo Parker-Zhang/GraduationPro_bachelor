@@ -6,6 +6,7 @@
 #include <dynamixel_workbench_msgs/DynamixelCommand.h>
 
 #include<my_dynamixel_workbench_test/dxl_state.h>
+#include<my_dynamixel_workbench_test/desired_trajectory.h>
 #include<my_dynamixel_workbench_test/ChangeGoalPosition.h>
 #include<my_dynamixel_workbench_test/ChangePIDGain.h>
 
@@ -43,6 +44,7 @@ private:
   JointTrajectory *jnt_tra_;
   std::vector<WayPoint> pre_goal_;
   trajectory_msgs::JointTrajectory *jnt_tra_test_;
+  my_dynamixel_workbench_test::desired_trajectory d_tra;
 
   bool is_moving_;
   //bool is_zero_point = false;
@@ -53,6 +55,7 @@ private:
 
   //ROS public
   ros::Publisher dynamixel_state_list_pub_;
+  ros::Publisher desired_tra_pub_;
 
   //ROS subscriber
   ros::Subscriber trajectory_sub_;
@@ -74,9 +77,9 @@ private:
   int32_t * last_pos_err ;
   int32_t * pos_err_integral ;
 
-  float p_gain = 0.06;
-  float i_gain = 0.001;
-  float d_gain = 0.1;
+  float p_gain = 0.0325;
+  float i_gain = 0.0;
+  float d_gain = 0.05;
   int16_t limit_current = 50;
 
   
@@ -121,6 +124,7 @@ public:
     void pidControllerInit();
   
   // load trajectory
+    void initGoalPos();
     bool getTrajectoryInfo(const std::string yaml_file, trajectory_msgs::JointTrajectory *jnt_tra_msg);
     void TrajectoryInfoInit();
     void generatoTra(trajectory_msgs::JointTrajectory *msg);

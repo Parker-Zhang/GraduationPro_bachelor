@@ -75,6 +75,7 @@ endif(NOT ${YAML_CPP_VERSION} VERSION_LESS "0.5")
  add_message_files(
    FILES
     dxl_state.msg
+    desired_trajectory.msg
 #   Message1.msg
 #   Message2.msg
  )

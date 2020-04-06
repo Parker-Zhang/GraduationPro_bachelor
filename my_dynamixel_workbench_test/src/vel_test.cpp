@@ -38,10 +38,8 @@ int main(int argc,char **argv)
 
   dxl_wb.ledOff(ID);
 //  dxl_wb.torqueOff(ID);
-//  dxl_wb.setVelocityBasedProfile(ID);
-  dxl_wb.torqueOn(ID);
+//  dxl_wb.setVelocityBasedProfile(ID); 
   ROS_INFO("Welcome my dynamixel workbench!");
-
   //feedback info
   float radian = 0.0;
   int32_t position_data = 0.0;
@@ -51,7 +49,10 @@ int main(int argc,char **argv)
   int32_t current_data = 0;
 
   //dxl_wb.setPositionControlMode(ID);
-  dxl_wb.setCurrentControlMode(ID);
+  //dxl_wb.setCurrentControlMode(ID);
+  //dxl_wb.setPositionControlMode(ID);
+  dxl_wb.setExtendedPositionControlMode(ID);
+  dxl_wb.torqueOn(ID);
   int count = 0;
   int symbol = -1;
 
@@ -71,7 +72,6 @@ int main(int argc,char **argv)
   ROS_INFO("Current Limit:%d",limit_current);
   //we have to limit the max&min current  
   limit_current = 50;  
-
   //msg
   ros::Rate loop_rate(10);
   msg.id = ID;
@@ -87,7 +87,6 @@ int main(int argc,char **argv)
    // fout1.close();
     // return 0;
    }
-
    //get dxl state include current velocity & radian
    dxl_wb.itemRead(ID,"Present_Position",&present_position);
    dxl_wb.getRadian(ID,&radian);
@@ -114,7 +113,8 @@ int main(int argc,char **argv)
    }
    ROS_INFO("goal_current:%d",goal_current);
 
-   dxl_wb.itemWrite(ID,"Goal_Current",goal_current);
+  // dxl_wb.itemWrite(ID,"Goal_Current",goal_current);
+   dxl_wb.itemWrite(ID,"Goal_Position",goal_position);
    //output current 
 
    //publish message & record dxl_state data
@@ -124,7 +124,7 @@ int main(int argc,char **argv)
    msg.present_velocity = velocity;
    msg.present_current = current;
    dxl_state_pub.publish(msg); 
-   recordDxlState2Txt(msg);
+   //recordDxlState2Txt(msg);
    loop_rate.sleep();
   }
   return 0;
