@@ -195,6 +195,9 @@ target_link_libraries(my_dxl_master ${catkin_LIBRARIES} ${Eigen3_LIBRARIES} ${YA
 
 add_executable(my_operator src/my_operator.cpp)
 target_link_libraries(my_operator ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
+
+add_executable(distributeControl src/distributeControl.cpp src/trajectory_generator.cpp)
+target_link_libraries(distributeControl ${catkin_LIBRARIES} ${Eigen3_LIBRARIES} ${YAML_CPP_LIBRARIES})
 #############
 ## Install ##
 #############

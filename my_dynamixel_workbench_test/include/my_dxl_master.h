@@ -76,6 +76,9 @@ private:
   int32_t * pos_err ;
   int32_t * last_pos_err ;
   int32_t * pos_err_integral ;
+  int32_t * pos_com_err_integral;
+  int32_t * last_pos_com_err;
+  int32_t * pos_com_err;
 
   float p_gain = 0.0325;
   float i_gain = 0.0;

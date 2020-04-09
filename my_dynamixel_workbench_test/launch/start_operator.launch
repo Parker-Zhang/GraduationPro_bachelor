@@ -1,5 +1,5 @@
 <launch>
-  <param name="trajectory_info" value="$(find my_dynamixel_workbench_test)/cfg/trajectory_01.yaml"/>
+  <param name="trajectory_info" value="$(find my_dynamixel_workbench_test)/cfg/TestTra02.yaml"/>
   <node name="my_operator" pkg="my_dynamixel_workbench_test" type="my_operator"
         required="true" output="screen" >
   </node>
