@@ -1,0 +1,382 @@
+joint:
+  names: [zero,first]
+trajectory:
+  index: [wp1,wp2,wp3,wp4,wp5,wp6,wp7,wp8,wp9,wp10,wp11,wp12,wp13,wp14,wp15,wp16,wp17,wp18,wp19,wp20,wp21,wp22,wp23,wp24,wp25,wp26,wp27,wp28,wp29,wp30,wp31,wp32,wp33,wp34,wp35,wp36,wp37,wp38,wp39,wp40,wp41,wp42,wp43,wp44,wp45,wp46,wp47,wp48,wp49,wp50,wp51,wp52,wp53,wp54,wp55,wp56,wp57,wp58,wp59,wp60,wp61,wp62,wp63,wp64,wp65,wp66,wp67,wp68,wp69,wp70,wp71,wp72,wp73,wp74,wp75,wp76,wp77,wp78,wp79,wp80,wp81,wp82,wp83,wp84,wp85,wp86,wp87,wp88,wp89,wp90,wp91,wp92,wp93,wp94,wp95,wp96,wp97,wp98,wp99,wp100,wp101,wp102,wp103,wp104,wp105,wp106,wp107,wp108,wp109,wp110,wp111,wp112,wp113,wp114,wp115,wp116,wp117,wp118,wp119,wp120,wp121,wp122,wp123,wp124,wp125,wp126]
+  wp1:
+    pos: [0.000000,0.000000]
+    time_from_start: 0.010000
+  wp2:
+    pos: [-0.134435,-0.161338]
+    time_from_start: 0.020000
+  wp3:
+    pos: [-0.276218,-0.331369]
+    time_from_start: 0.030000
+  wp4:
+    pos: [-0.423177,-0.507464]
+    time_from_start: 0.040000
+  wp5:
+    pos: [-0.572868,-0.686675]
+    time_from_start: 0.050000
+  wp6:
+    pos: [-0.722663,-0.865839]
+    time_from_start: 0.060000
+  wp7:
+    pos: [-0.869835,-1.041691]
+    time_from_start: 0.070000
+  wp8:
+    pos: [-1.011657,-1.210975]
+    time_from_start: 0.080000
+  wp9:
+    pos: [-1.145487,-1.370553]
+    time_from_start: 0.090000
+  wp10:
+    pos: [-1.268849,-1.517497]
+    time_from_start: 0.100000
+  wp11:
+    pos: [-1.379497,-1.649165]
+    time_from_start: 0.110000
+  wp12:
+    pos: [-1.475462,-1.763256]
+    time_from_start: 0.120000
+  wp13:
+    pos: [-1.555084,-1.857840]
+    time_from_start: 0.130000
+  wp14:
+    pos: [-1.617027,-1.931372]
+    time_from_start: 0.140000
+  wp15:
+    pos: [-1.660281,-1.982691]
+    time_from_start: 0.150000
+  wp16:
+    pos: [-1.684157,-2.011010]
+    time_from_start: 0.160000
+  wp17:
+    pos: [-1.688282,-2.015902]
+    time_from_start: 0.170000
+  wp18:
+    pos: [-1.672594,-1.997296]
+    time_from_start: 0.180000
+  wp19:
+    pos: [-1.637334,-1.955468]
+    time_from_start: 0.190000
+  wp20:
+    pos: [-1.583061,-1.891056]
+    time_from_start: 0.200000
+  wp21:
+    pos: [-1.510648,-1.805062]
+    time_from_start: 0.210000
+  wp22:
+    pos: [-1.421297,-1.698873]
+    time_from_start: 0.220000
+  wp23:
+    pos: [-1.316534,-1.574256]
+    time_from_start: 0.230000
+  wp24:
+    pos: [-1.198202,-1.433364]
+    time_from_start: 0.240000
+  wp25:
+    pos: [-1.068437,-1.278700]
+    time_from_start: 0.250000
+  wp26:
+    pos: [-0.929627,-1.113083]
+    time_from_start: 0.260000
+  wp27:
+    pos: [-0.784352,-0.939571]
+    time_from_start: 0.270000
+  wp28:
+    pos: [-0.635315,-0.761386]
+    time_from_start: 0.280000
+  wp29:
+    pos: [-0.485253,-0.581801]
+    time_from_start: 0.290000
+  wp30:
+    pos: [-0.336848,-0.404038]
+    time_from_start: 0.300000
+  wp31:
+    pos: [-0.192632,-0.231145]
+    time_from_start: 0.310000
+  wp32:
+    pos: [-0.054897,-0.065897]
+    time_from_start: 0.320000
+  wp33:
+    pos: [0.074377,0.089309]
+    time_from_start: 0.330000
+  wp34:
+    pos: [0.193591,0.232523]
+    time_from_start: 0.340000
+  wp35:
+    pos: [0.301564,0.362303]
+    time_from_start: 0.350000
+  wp36:
+    pos: [0.397558,0.477739]
+    time_from_start: 0.360000
+  wp37:
+    pos: [0.481274,0.578448]
+    time_from_start: 0.370000
+  wp38:
+    pos: [0.552827,0.664555]
+    time_from_start: 0.380000
+  wp39:
+    pos: [0.612704,0.736629]
+    time_from_start: 0.390000
+  wp40:
+    pos: [0.661700,0.795620]
+    time_from_start: 0.400000
+  wp41:
+    pos: [0.700847,0.842761]
+    time_from_start: 0.410000
+  wp42:
+    pos: [0.731330,0.879473]
+    time_from_start: 0.420000
+  wp43:
+    pos: [0.754400,0.907260]
+    time_from_start: 0.430000
+  wp44:
+    pos: [0.771292,0.927608]
+    time_from_start: 0.440000
+  wp45:
+    pos: [0.783147,0.941889]
+    time_from_start: 0.450000
+  wp46:
+    pos: [0.790938,0.951275]
+    time_from_start: 0.460000
+  wp47:
+    pos: [0.795416,0.956669]
+    time_from_start: 0.470000
+  wp48:
+    pos: [0.797065,0.958656]
+    time_from_start: 0.480000
+  wp49:
+    pos: [0.796075,0.957464]
+    time_from_start: 0.490000
+  wp50:
+    pos: [0.792332,0.952955]
+    time_from_start: 0.500000
+  wp51:
+    pos: [0.785423,0.944631]
+    time_from_start: 0.510000
+  wp52:
+    pos: [0.774658,0.931663]
+    time_from_start: 0.520000
+  wp53:
+    pos: [0.759114,0.912939]
+    time_from_start: 0.530000
+  wp54:
+    pos: [0.737688,0.887131]
+    time_from_start: 0.540000
+  wp55:
+    pos: [0.709160,0.852772]
+    time_from_start: 0.550000
+  wp56:
+    pos: [0.672274,0.808352]
+    time_from_start: 0.560000
+  wp57:
+    pos: [0.625821,0.752422]
+    time_from_start: 0.570000
+  wp58:
+    pos: [0.568725,0.683690]
+    time_from_start: 0.580000
+  wp59:
+    pos: [0.500124,0.601130]
+    time_from_start: 0.590000
+  wp60:
+    pos: [0.419448,0.504068]
+    time_from_start: 0.600000
+  wp61:
+    pos: [0.326485,0.392266]
+    time_from_start: 0.610000
+  wp62:
+    pos: [0.221428,0.265976]
+    time_from_start: 0.620000
+  wp63:
+    pos: [0.104907,0.125977]
+    time_from_start: 0.630000
+  wp64:
+    pos: [-0.022008,-0.026420]
+    time_from_start: 0.640000
+  wp65:
+    pos: [-0.157817,-0.189387]
+    time_from_start: 0.650000
+  wp66:
+    pos: [-0.300630,-0.360631]
+    time_from_start: 0.660000
+  wp67:
+    pos: [-0.448226,-0.537464]
+    time_from_start: 0.670000
+  wp68:
+    pos: [-0.598122,-0.716892]
+    time_from_start: 0.680000
+  wp69:
+    pos: [-0.747668,-0.895729]
+    time_from_start: 0.690000
+  wp70:
+    pos: [-0.894130,-1.070703]
+    time_from_start: 0.700000
+  wp71:
+    pos: [-1.034789,-1.238569]
+    time_from_start: 0.710000
+  wp72:
+    pos: [-1.167026,-1.396220]
+    time_from_start: 0.720000
+  wp73:
+    pos: [-1.288400,-1.540772]
+    time_from_start: 0.730000
+  wp74:
+    pos: [-1.396709,-1.669635]
+    time_from_start: 0.740000
+  wp75:
+    pos: [-1.490034,-1.780571]
+    time_from_start: 0.750000
+  wp76:
+    pos: [-1.566768,-1.871712]
+    time_from_start: 0.760000
+  wp77:
+    pos: [-1.625630,-1.941580]
+    time_from_start: 0.770000
+  wp78:
+    pos: [-1.665665,-1.989077]
+    time_from_start: 0.780000
+  wp79:
+    pos: [-1.686237,-2.013477]
+    time_from_start: 0.790000
+  wp80:
+    pos: [-1.687027,-2.014414]
+    time_from_start: 0.800000
+  wp81:
+    pos: [-1.668022,-1.991874]
+    time_from_start: 0.810000
+  wp82:
+    pos: [-1.629518,-1.946194]
+    time_from_start: 0.820000
+  wp83:
+    pos: [-1.572125,-1.878073]
+    time_from_start: 0.830000
+  wp84:
+    pos: [-1.496771,-1.788576]
+    time_from_start: 0.840000
+  wp85:
+    pos: [-1.404713,-1.679154]
+    time_from_start: 0.850000
+  wp86:
+    pos: [-1.297531,-1.551640]
+    time_from_start: 0.860000
+  wp87:
+    pos: [-1.177120,-1.408248]
+    time_from_start: 0.870000
+  wp88:
+    pos: [-1.045661,-1.251538]
+    time_from_start: 0.880000
+  wp89:
+    pos: [-0.905579,-1.084373]
+    time_from_start: 0.890000
+  wp90:
+    pos: [-0.759480,-0.909848]
+    time_from_start: 0.900000
+  wp91:
+    pos: [-0.610080,-0.731198]
+    time_from_start: 0.910000
+  wp92:
+    pos: [-0.460112,-0.551698]
+    time_from_start: 0.920000
+  wp93:
+    pos: [-0.312240,-0.374546]
+    time_from_start: 0.930000
+  wp94:
+    pos: [-0.168960,-0.202754]
+    time_from_start: 0.940000
+  wp95:
+    pos: [-0.032520,-0.039038]
+    time_from_start: 0.950000
+  wp96:
+    pos: [0.095164,0.114274]
+    time_from_start: 0.960000
+  wp97:
+    pos: [0.212558,0.255316]
+    time_from_start: 0.970000
+  wp98:
+    pos: [0.318557,0.382734]
+    time_from_start: 0.980000
+  wp99:
+    pos: [0.412495,0.495705]
+    time_from_start: 0.990000
+  wp100:
+    pos: [0.494147,0.593938]
+    time_from_start: 1.000000
+  wp101:
+    pos: [0.563694,0.677634]
+    time_from_start: 1.010000
+  wp102:
+    pos: [0.621678,0.747433]
+    time_from_start: 1.020000
+  wp103:
+    pos: [0.668941,0.804338]
+    time_from_start: 1.030000
+  wp104:
+    pos: [0.706545,0.849623]
+    time_from_start: 1.040000
+  wp105:
+    pos: [0.735693,0.884728]
+    time_from_start: 1.050000
+  wp106:
+    pos: [0.757639,0.911163]
+    time_from_start: 1.060000
+  wp107:
+    pos: [0.773609,0.930399]
+    time_from_start: 1.070000
+  wp108:
+    pos: [0.784717,0.943781]
+    time_from_start: 1.080000
+  wp109:
+    pos: [0.791906,0.952441]
+    time_from_start: 1.090000
+  wp110:
+    pos: [0.795882,0.957231]
+    time_from_start: 1.100000
+  wp111:
+    pos: [0.797082,0.958677]
+    time_from_start: 1.110000
+  wp112:
+    pos: [0.795646,0.956947]
+    time_from_start: 1.120000
+  wp113:
+    pos: [0.791407,0.951841]
+    time_from_start: 1.130000
+  wp114:
+    pos: [0.783905,0.942802]
+    time_from_start: 1.140000
+  wp115:
+    pos: [0.772407,0.928951]
+    time_from_start: 1.150000
+  wp116:
+    pos: [0.755955,0.909134]
+    time_from_start: 1.160000
+  wp117:
+    pos: [0.733422,0.881993]
+    time_from_start: 1.170000
+  wp118:
+    pos: [0.703576,0.846047]
+    time_from_start: 1.180000
+  wp119:
+    pos: [0.665163,0.799790]
+    time_from_start: 1.190000
+  wp120:
+    pos: [0.616992,0.741792]
+    time_from_start: 1.200000
+  wp121:
+    pos: [0.558014,0.670798]
+    time_from_start: 1.210000
+  wp122:
+    pos: [0.487414,0.585835]
+    time_from_start: 1.220000
+  wp123:
+    pos: [0.404676,0.486300]
+    time_from_start: 1.230000
+  wp124:
+    pos: [0.309654,0.372030]
+    time_from_start: 1.240000
+  wp125:
+    pos: [0.202614,0.243366]
+    time_from_start: 1.250000
+  wp126:
+    pos: [0.084257,0.101175]
+    time_from_start: 1.260000

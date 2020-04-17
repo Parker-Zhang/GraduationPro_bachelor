@@ -1,19 +1,12 @@
 joint:
   names: [zero,first,second]
 trajectory:
-  index: [wp1,wp2,wp3,wp4]
+  index: [wp1,wp2]
   wp1:
-    pos: [0.0,0.0,0.0]
+    pos: [0,0,0]
     time_from_start: 0.2
   wp2:
-    pos: [1,1.5,2]
-    vel: [4,5,6]
-    time_from_start: 0.4
-  wp3:
-    pos: [1.5,2,2.5]
-    vel: [4,5,6]
-    time_from_start: 0.6
-  wp4:
-    pos: [2,2.5,3]
-    time_from_start: 0.7
+    pos: [3.14,3.14,3.14]
+    time_from_start: 0.8
+
   
