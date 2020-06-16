@@ -8,11 +8,9 @@ A distribute control method is applied.
 
 ## code guide
 
-the official package is in `DynamixelSDKdynamixel-workbench dynamixel-workbench-msgs ` folder.
-
 the main ros package I rewrite is in `my_dynamixel_workbench_test` folder.
 
-when you put them into your catkin workspace, then compile it.
+when you put it into your catkin workspace, then compile it.
 
 ```shell
 cd catkin_ws
