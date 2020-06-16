@@ -28,15 +28,15 @@ MyDynamixelController::MyDynamixelController()
     dxl_wb_ = new DynamixelWorkbench;
     jnt_tra_msg_ = new trajectory_msgs::JointTrajectory;
     jnt_tra_test_ = new trajectory_msgs::JointTrajectory;
-    //read_period_ = priv_node_handle_.param<double>("dxl_read_period", 0.010f);
-    write_period_ = priv_node_handle_.param<double>("dxl_write_period", 0.010f);
+    read_period_ = priv_node_handle_.param<double>("dxl_read_period", 0.0050f);
+    write_period_ = priv_node_handle_.param<double>("dxl_write_period", 0.01f);
     pub_period_ = priv_node_handle_.param<double>("publish_period", 0.10f);
     jnt_tra_ = new JointTrajectory;
     
     goal_position = 0;
-    p_gain = 0.0325;//0.1
+    p_gain = 0.07;//0.1
     i_gain = 0;//0.01
-    d_gain = 0.05;
+    d_gain = 0.1;
     is_moving_ = false;
 }
 
@@ -383,7 +383,7 @@ void MyDynamixelController::trajectoryMsgCallback(const trajectory_msgs::JointTr
 
         pre_goal_ = goal;
         cnt++;
-      }
+      } 
 
       ROS_INFO("Succeeded to get joint trajectory!");
       is_moving_ = true;
@@ -519,7 +519,7 @@ void MyDynamixelController::writeCallback(const ros::TimerEvent&){
     {
       point_cnt++;
       position_cnt = 0;
-      ROS_INFO("the %d th point",point_cnt);
+      //ROS_INFO("the %d th point",point_cnt);
       // jnt_tra_msg_->points.size() 表示路径上点的总数
       if (point_cnt >= jnt_tra_msg_->points.size())
       {

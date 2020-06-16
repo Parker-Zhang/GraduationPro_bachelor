@@ -24,17 +24,17 @@ bool MyOperator::getTrajectoryInfo(const std::string yaml_file,
         return false;
     //
     YAML::Node joint = file["joint"];
-    uint8_t joint_size = joint["names"].size();
+    uint16_t joint_size = joint["names"].size();
 
-    for (uint8_t index = 0; index < joint_size; index++)
+    for (uint16_t index = 0; index < joint_size; index++)
     {
         std::string joint_name = joint["names"][index].as<std::string>();
         jnt_tra_msg->joint_names.push_back(joint["names"][index].as<std::string>());
     }
     //
     YAML::Node trajectory = file["trajectory"];
-    uint8_t trajectory_size = trajectory["index"].size();
-    for (uint8_t index = 0;index<trajectory_size;index++)
+    uint16_t trajectory_size = trajectory["index"].size();
+    for (uint16_t index = 0;index<trajectory_size;index++)
     {
         trajectory_msgs::JointTrajectoryPoint jnt_tra_point;
         std::string index_ = trajectory["index"][index].as<std::string>();
@@ -44,7 +44,7 @@ bool MyOperator::getTrajectoryInfo(const std::string yaml_file,
             ROS_ERROR("Please check way point pos size. It must be equal to joint size");
             return 0;
         }
-        for (uint8_t size=0;size<wp_num["pos"].size();size++)
+        for (uint16_t size=0;size<wp_num["pos"].size();size++)
         {
             jnt_tra_point.positions.push_back(wp_num["pos"][size].as<double>());
             ROS_INFO("NO.way point : %s, position : %f", index_.c_str(), wp_num["pos"][size].as<double>());
@@ -52,7 +52,7 @@ bool MyOperator::getTrajectoryInfo(const std::string yaml_file,
         if (wp_num["vel"] != NULL)
         {
             // 速度的size也要和pos一样
-            for (uint8_t size=0;size<wp_num["vel"].size();size++)
+            for (uint16_t size=0;size<wp_num["vel"].size();size++)
             {
                 jnt_tra_point.velocities.push_back(wp_num["vel"][size].as<double>());
                 ROS_INFO("NO.way point : %s, velocity : %f", index_.c_str(), wp_num["vel"][size].as<double>());
@@ -61,7 +61,7 @@ bool MyOperator::getTrajectoryInfo(const std::string yaml_file,
         if (wp_num["acc"] != NULL)
         {
             //加速度的size也要和pos一样
-            for (uint8_t size=0;size<wp_num["acc"].size();size++)
+            for (uint16_t size=0;size<wp_num["acc"].size();size++)
             {
                 jnt_tra_point.accelerations.push_back(wp_num["acc"][size].as<double>());
                 ROS_INFO("NO.way point : %s, acceleration : %f", index_.c_str(), wp_num["acc"][size].as<double>());

@@ -34,9 +34,9 @@ MyDynamixelController::MyDynamixelController()
     jnt_tra_ = new JointTrajectory;
     
     goal_position = 0;
-    p_gain = 0.0325;//0.1
-    i_gain = 0;//0.01
-    d_gain = 0.05;
+    p_gain = 0.2;//0.325
+    i_gain = 0;//0
+    d_gain = 0.25;//0.05
     is_moving_ = false;
 }
 
@@ -935,12 +935,15 @@ int MyDynamixelController::pidController(int goal_position_ , int id)
   pos_err[index] = goal_position_ - present_position ;
   pos_err_integral[index] += pos_err[index];
   //id=0受控
-  float k_com_p = 0.01;
-  float k_com_i = 0.001;
-  float k_com_d = 0.01;
+  float k_com_p = 0.02;
+  float k_com_i = 0;
+  float k_com_d = 0.02;
   if(id==0)
   {
     goal_current = (int16_t) (p_gain * pos_err[index]+ i_gain * pos_err_integral[index] +d_gain * (pos_err[index]-last_pos_err[index])); 
+    k_com_p = 0;
+    k_com_i = 0;
+    k_com_d = 0;
   }
   //ROS_INFO("id=%d  present_pos=%d  pos_err=%d index:%d ",id, present_position, pos_err[index],index);
   //引入分布式的控制方法，即将其他舵机的位置也作为输入量，id
@@ -951,7 +954,7 @@ int MyDynamixelController::pidController(int goal_position_ , int id)
     int temp_pos = dynamixel_state_list_.dynamixel_state[index_].present_position;
     if(index_!=index)
     {
-      pos_com_err_temp += temp_pos - present_position;
+      pos_com_err_temp += temp_pos - present_position +goal_pos[index]-goal_pos[index_];
     }
   }
   pos_com_err[index]= pos_com_err_temp;

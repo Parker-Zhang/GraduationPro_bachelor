@@ -62,9 +62,9 @@ int main(int argc,char **argv)
   int position_err = 0;
   int last_position_err = 0;
   int err_integral = 0;
-  float p_gain = 0.1;//0.1
+  float p_gain = 0.0325;//0.1
   float i_gain = 0.0;//0.01
-  float d_gain = 0;
+  float d_gain = 0.05;
   int present_position = 0;
   int limit_current = 0;
 

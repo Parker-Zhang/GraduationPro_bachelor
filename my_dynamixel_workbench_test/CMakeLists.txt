@@ -187,8 +187,7 @@ include_directories(
 add_executable(vel_test src/vel_test.cpp)
 target_link_libraries(vel_test ${catkin_LIBRARIES})
 
-add_executable(turtlesim_dynamic src/turtlesim_dynamic.cpp)
-target_link_libraries(turtlesim_dynamic ${catkin_LIBRARIES})
+
 
 add_executable(my_dxl_master src/my_dxl_master.cpp src/trajectory_generator.cpp)
 target_link_libraries(my_dxl_master ${catkin_LIBRARIES} ${Eigen3_LIBRARIES} ${YAML_CPP_LIBRARIES})
@@ -198,6 +197,10 @@ target_link_libraries(my_operator ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
 add_executable(distributeControl src/distributeControl.cpp src/trajectory_generator.cpp)
 target_link_libraries(distributeControl ${catkin_LIBRARIES} ${Eigen3_LIBRARIES} ${YAML_CPP_LIBRARIES})
+
+
+
+
 #############
 ## Install ##
 #############
