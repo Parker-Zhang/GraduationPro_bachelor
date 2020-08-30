@@ -88,6 +88,7 @@ endif(NOT ${YAML_CPP_VERSION} VERSION_LESS "0.5")
     DynamixelCommand.srv
     ChangeGoalPosition.srv
     ChangePIDGain.srv
+    ChangeGoalCurrent.srv
  )
 
 ## Generate actions in the 'action' folder
@@ -187,10 +188,17 @@ include_directories(
 add_executable(vel_test src/vel_test.cpp)
 target_link_libraries(vel_test ${catkin_LIBRARIES})
 
+add_executable(motor_node src/motor_node.cpp)
+target_link_libraries(motor_node ${catkin_LIBRARIES})
 
+add_executable(turtlesim_dynamic src/turtlesim_dynamic.cpp)
+target_link_libraries(turtlesim_dynamic ${catkin_LIBRARIES})
 
 add_executable(my_dxl_master src/my_dxl_master.cpp src/trajectory_generator.cpp)
 target_link_libraries(my_dxl_master ${catkin_LIBRARIES} ${Eigen3_LIBRARIES} ${YAML_CPP_LIBRARIES})
+
+add_executable(exoskeletonController src/exoskeletonController.cpp src/trajectory_generator.cpp)
+target_link_libraries(exoskeletonController ${catkin_LIBRARIES} ${Eigen3_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
 add_executable(my_operator src/my_operator.cpp)
 target_link_libraries(my_operator ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
@@ -198,7 +206,20 @@ target_link_libraries(my_operator ${catkin_LIBRARIES} ${YAML_CPP_LIBRARIES})
 add_executable(distributeControl src/distributeControl.cpp src/trajectory_generator.cpp)
 target_link_libraries(distributeControl ${catkin_LIBRARIES} ${Eigen3_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
+add_executable(ACimpedance src/ACimpedance.cpp src/trajectory_generator.cpp)
+target_link_libraries(ACimpedance ${catkin_LIBRARIES} ${Eigen3_LIBRARIES} ${YAML_CPP_LIBRARIES})
 
+add_executable(K-cur src/K-cur.cpp )
+target_link_libraries(K-cur ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
+
+add_executable(K-vel src/K-vel.cpp )
+target_link_libraries(K-vel ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
+
+add_executable(num-cur src/num-cur.cpp )
+target_link_libraries(num-cur ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
+
+add_executable(num-vel src/num-vel.cpp )
+target_link_libraries(num-vel ${catkin_LIBRARIES} ${Eigen3_LIBRARIES})
 
 
 #############

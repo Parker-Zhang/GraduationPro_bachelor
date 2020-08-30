@@ -1,5 +1,5 @@
 /**********************************************************************
-//my_dxl_master.cpp
+//distributeControl.cpp
 //Date:2020.2.28
 //Descripotion:This is a control_master that connect real motor through
 //USB,publish motor's state,subscribe motor's control command from motor
@@ -469,14 +469,6 @@ void MyDynamixelController::writeCallback(const ros::TimerEvent&){
 
   if (is_moving_==true)
   {
-    // 存储序号 循环names
-    // 循环id_array index 0:2
-    // id_array[index](1 2 0)==(uint8_t)dynamixel_[joint](0 1 2)
-    // true break;
-    // cnt记录的是输入轨迹中定义的舵机的数量
-    // index_array[cnt++]=index (2 0 1)
-    // for cnt
-    // index_cnt =0 gol_pos(index_arry[index_cnt]=2)=
     for (auto const& dxl:dynamixel_)
     {
       id_array[id_cnt++] = (uint8_t)dxl.second;//1 2 0
@@ -681,16 +673,70 @@ void MyDynamixelController::publishCallback(const ros::TimerEvent&)
 
 // load trajectory
 void MyDynamixelController::initGoalPos(){
+// // case 1:人为设定初始值
+  // uint8_t id_array[dynamixel_.size()];
+  // uint8_t id_cnt = 0;
+  // for (auto const& dxl:dynamixel_)
+  // {
+  //   id_array[id_cnt++] = (uint8_t)dxl.second;//1 2 0
+  // }
+
+  // for (uint8_t index = 0; index < id_cnt; index++)
+  // {
+  //   // 初始化目标位置
+  //   goal_pos[index] = 2048;
+  // }
+
+  // case 2:设定开机状态的位置值为初始值
+  // 先使绳线张紧
+  tightenRope();
+  bool result = false;
+  const char* log = NULL;
+
+  dynamixel_workbench_msgs::DynamixelState  dynamixel_state[dynamixel_.size()];
+
+  int32_t get_position[dynamixel_.size()];
   uint8_t id_array[dynamixel_.size()];
   uint8_t id_cnt = 0;
+
   for (auto const& dxl:dynamixel_)
   {
-    id_array[id_cnt++] = (uint8_t)dxl.second;//1 2 0
+    dynamixel_state[id_cnt].name = dxl.first;
+    dynamixel_state[id_cnt].id = (uint8_t)dxl.second;
+
+    id_array[id_cnt++] = (uint8_t)dxl.second;
   }
-  for (uint8_t index = 0; index < id_cnt; index++)
+
+  result = dxl_wb_->syncRead(SYNC_READ_HANDLER_FOR_PRESENT_POSITION_VELOCITY_CURRENT,
+                              id_array,
+                              dynamixel_.size(),
+                              &log);
+  if (result == false)
   {
-    goal_pos[index] = 2048;
+    ROS_ERROR("%s", log);
   }
+
+  result = dxl_wb_->getSyncReadData(SYNC_READ_HANDLER_FOR_PRESENT_POSITION_VELOCITY_CURRENT,
+                                                id_array,
+                                                id_cnt,
+                                                control_items_["Present_Position"]->address,
+                                                control_items_["Present_Position"]->data_length,
+                                                get_position,
+                                                &log);
+  if (result == false)
+  {
+    ROS_ERROR("%s", log);
+  }
+
+  for(uint8_t index = 0; index < id_cnt; index++)
+  {
+    
+    init_pos[index] = get_position[index];
+    goal_pos[index] = 0;
+    ROS_INFO("id:%d present_position:%d  index:%d",id_array[index],get_position[index],index);
+  }
+
+
 }
 
 bool MyDynamixelController::getTrajectoryInfo(const std::string yaml_file, trajectory_msgs::JointTrajectory *jnt_tra_msg)
@@ -863,6 +909,7 @@ void MyDynamixelController::pidControllerInit(){
   pos_com_err_integral = new int[dynamixel_.size()];
   pos_com_err = new int[dynamixel_.size()];
   last_pos_com_err = new int[dynamixel_.size()];
+  init_pos = new int[dynamixel_.size()];
   for (int i=0;i<dynamixel_.size();i++)
   {
     pos_err[i] = 0 ;
@@ -872,6 +919,7 @@ void MyDynamixelController::pidControllerInit(){
     pos_com_err_integral[i]=0;
     pos_com_err[i]=0;
     last_pos_com_err[i] = 0;
+    // init_pos[i] = 0;
   }
 }
 
@@ -930,6 +978,7 @@ int MyDynamixelController::pidController(int goal_position_ , int id)
     }
   }
   int32_t present_position = dynamixel_state_list_.dynamixel_state[index].present_position;
+  present_position = present_position - init_pos[index];
   int16_t goal_current = 0;
   last_pos_err[index] = pos_err[index];
   pos_err[index] = goal_position_ - present_position ;
@@ -972,6 +1021,40 @@ int MyDynamixelController::pidController(int goal_position_ , int id)
   }
 
   return goal_current;
+}
+
+void MyDynamixelController::tightenRope()
+{
+// 先给每个舵机小电流，延时一段时间，放松
+bool result = false;
+const char* log = NULL;
+int32_t dynamixel_current[dynamixel_.size()];
+uint8_t id_array[dynamixel_.size()];
+uint8_t id_cnt = 0;
+
+for (auto const& dxl:dynamixel_)
+{
+  dynamixel_current[id_cnt] = -3;
+  id_array[id_cnt++] = (uint8_t)dxl.second;
+}
+
+result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_CURRENT, id_array, id_cnt, dynamixel_current, 1, &log);
+//result = true;
+if (result == false)
+{
+  ROS_ERROR("%s", log);
+}
+usleep(5000*1000);
+
+for(int i=0;i<id_cnt;i++)
+{
+  dynamixel_current[id_cnt] = 0;
+}
+
+result = dxl_wb_->syncWrite(SYNC_WRITE_HANDLER_FOR_GOAL_CURRENT, id_array, id_cnt, dynamixel_current, 1, &log);
+
+ROS_INFO("Tighten ropes finish!");
+
 }
 
 // main function

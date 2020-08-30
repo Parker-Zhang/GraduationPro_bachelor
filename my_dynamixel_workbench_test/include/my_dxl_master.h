@@ -9,6 +9,7 @@
 #include<my_dynamixel_workbench_test/desired_trajectory.h>
 #include<my_dynamixel_workbench_test/ChangeGoalPosition.h>
 #include<my_dynamixel_workbench_test/ChangePIDGain.h>
+#include<my_dynamixel_workbench_test/ChangeGoalCurrent.h>
 
 #include <trajectory_msgs/JointTrajectory.h>
 #include <trajectory_msgs/JointTrajectoryPoint.h>
@@ -31,7 +32,6 @@ typedef struct
 class MyDynamixelController
 {
 private:
-  // ROS NodeHandle 为什么要有两个handle??
   ros::NodeHandle node_handle_;
   ros::NodeHandle priv_node_handle_;      
 
@@ -52,6 +52,7 @@ private:
   // ROS Service Server
   ros::ServiceServer changeGoalPositonSrv;
   ros::ServiceServer changePIDGainSrv;
+  ros::ServiceServer changeGoalCurrentSrv;
 
   //ROS public
   ros::Publisher dynamixel_state_list_pub_;
@@ -67,23 +68,28 @@ private:
 
   // pid controller parameters
   int32_t  goal_position = 0;
+  int16_t  demo_current = -6;
 
   int32_t position_err = 0;
   int32_t last_position_err = 0;
   int32_t err_integral = 0;
 
+
   int32_t * goal_pos;
+  int32_t * init_pos;
   int32_t * pos_err ;
   int32_t * last_pos_err ;
   int32_t * pos_err_integral ;
   int32_t * pos_com_err_integral;
   int32_t * last_pos_com_err;
   int32_t * pos_com_err;
+  int16_t * goal_cur;
+  
 
-  float p_gain = 0.0325;
-  float i_gain = 0.0;
+  float p_gain = 0.325;
+  float i_gain = 0.01;
   float d_gain = 0.05;
-  int16_t limit_current = 50;
+  int16_t limit_current = 15;
 
   
 public:
@@ -100,11 +106,18 @@ public:
     void initSubscriber(void);
     void initPublisher(void);
 
+    // 2020.8.10
+    void endTest();
+    void tightenRope();
+
   // callback
     bool changePositionCallback(my_dynamixel_workbench_test::ChangeGoalPosition::Request &req
                                   ,my_dynamixel_workbench_test::ChangeGoalPosition::Response &res);
     bool changePIDGain(my_dynamixel_workbench_test::ChangePIDGain::Request &req
                           ,my_dynamixel_workbench_test::ChangePIDGain::Response &res);
+    bool changeGoalCurrentCallback(my_dynamixel_workbench_test::ChangeGoalCurrent::Request &req
+                                  ,my_dynamixel_workbench_test::ChangeGoalCurrent::Response &res);
+
 
     void trajectoryMsgCallback(const trajectory_msgs::JointTrajectory::ConstPtr &msg);     
                             
@@ -123,6 +136,7 @@ public:
     bool setLimitCurrent(int lim_cur);
     int pidController(int current_position);
     int pidController(int goal_position_ ,int id);
+    int testController(int id);
 
     void pidControllerInit();
   

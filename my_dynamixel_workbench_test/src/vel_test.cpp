@@ -8,7 +8,7 @@
 using namespace std;
 
 #define BAUDRATE 57600
-#define ID 0
+#define ID 1
 
 string folder="state_data/data1.txt";
 std::ofstream fout1(folder.c_str());
@@ -36,7 +36,7 @@ int main(int argc,char **argv)
   dxl_wb.begin("/dev/ttyUSB0",BAUDRATE);
   dxl_wb.ping(ID);
 
-  dxl_wb.ledOff(ID);
+  dxl_wb.ledOn(ID);
 //  dxl_wb.torqueOff(ID);
 //  dxl_wb.setVelocityBasedProfile(ID); 
   ROS_INFO("Welcome my dynamixel workbench!");
@@ -49,15 +49,16 @@ int main(int argc,char **argv)
   int32_t current_data = 0;
 
   //dxl_wb.setPositionControlMode(ID);
-  //dxl_wb.setCurrentControlMode(ID);
+  dxl_wb.setCurrentControlMode(ID);
   //dxl_wb.setPositionControlMode(ID);
-  dxl_wb.setExtendedPositionControlMode(ID);
+  // dxl_wb.setExtendedPositionControlMode(ID);
   dxl_wb.torqueOn(ID);
   int count = 0;
   int symbol = -1;
 
   //pid current control 
   int goal_position = 2000;
+  int init_goal_position = 2000;
   int goal_current = 0;
   int position_err = 0;
   int last_position_err = 0;
@@ -65,6 +66,9 @@ int main(int argc,char **argv)
   float p_gain = 0.0325;//0.1
   float i_gain = 0.0;//0.01
   float d_gain = 0.05;
+
+  float k1 = 10;
+
   int present_position = 0;
   int limit_current = 0;
 
@@ -78,15 +82,6 @@ int main(int argc,char **argv)
 
   while(ros::ok())
   {
-   count++;
-   if(count==20)
-   {
-     count = 0;
-     symbol = -symbol;
-    // dxl_wb.goalPosition(ID,2000+symbol*200);
-   // fout1.close();
-    // return 0;
-   }
    //get dxl state include current velocity & radian
    dxl_wb.itemRead(ID,"Present_Position",&present_position);
    dxl_wb.getRadian(ID,&radian);
@@ -95,10 +90,10 @@ int main(int argc,char **argv)
    dxl_wb.itemRead(ID,"Present_Current",&current_data);
    current = dxl_wb.convertValue2Current(ID,current_data);
    ROS_INFO("radian:%2.2f degree velocity:%0.3f rpm current:%0.2f mA present_position:%d",radian/3.14*180+180,velocity,current,present_position); 
-   /****************************/
-   //pid control; first step realise p control
-   //Expect:goal_position feedback:present_position Input:goal_current output:present_position
-   /****************************/
+   
+   goal_position = goal_position + k1*(int16_t(current_data)-int16_t(goal_current));
+
+
    last_position_err = position_err;
    position_err = goal_position - present_position;
    err_integral += position_err;
@@ -112,9 +107,10 @@ int main(int argc,char **argv)
       goal_current = -limit_current;
    }
    ROS_INFO("goal_current:%d",goal_current);
+   ROS_INFO("goal_position:%d",goal_position);
 
-  // dxl_wb.itemWrite(ID,"Goal_Current",goal_current);
-   dxl_wb.itemWrite(ID,"Goal_Position",goal_position);
+  dxl_wb.itemWrite(ID,"Goal_Current",goal_current);
+  //  dxl_wb.itemWrite(ID,"Goal_Position",goal_position);
    //output current 
 
    //publish message & record dxl_state data

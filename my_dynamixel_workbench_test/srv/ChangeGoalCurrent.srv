@@ -1,0 +1,8 @@
+#this is a small test for changing goal_position
+
+int16 goal_current
+int8 id
+
+---
+
+bool result

@@ -1,0 +1,15 @@
+Q1,Q2,Qf,Qu等需要声明
+gamma和系统关键字冲突，名称修改为gam
+Qx(0,0) = Qf^2*Q1；math库未定义^操作符，修改为
+Q_f应为Qf
+P = MatrixXd::Identity(16*16)*10000;修改为P = MatrixXd::Identity(16,16)*10000;
+u        = K*statePre;错误是由此处u应当为一个1*1的矩阵。修改方式为：在定义u的地方补充定义Eigen::MatrixXd uMat(1, 1);，将u        = K*statePre;	修改为uMat = K*statePre;  u        = uMat(0,0);
+
+cost = state.transpose()*Qx*state + u*Qu*u;的错误同上，修改方式为：在定义cost的地方补充定义Eigen::MatrixXd costMat(1, 1);,将cost = state.transpose()*Qx*state + u*Qu*u;修改为costMat = state.transpose()*Qx*state + u*Qu*u;		 cost = costMat(0,0);
+P          = P-P*phi*phi.transpose()*P/(1+phi.transpose()*P*phi);错误同上，修改方式为：
+1.补充定义：Eigen::MatrixXd eye(1, 1);		eye(0, 0) = 1;
+2.修改为gradient   = P*phi*(costMat - phi.transpose()*theta)/(eye+phi.transpose()*P*phi);
+
+KroneckerProduct未定义：在头文件中添加#include <Eigen/KroneckerProduct>
+if (step>update_step*1 && mod(i,update_step)==0)	{K = Kac;}修改为if (step>update_step*1 && (step % update_step == 0) )	{K = Kac;}
+

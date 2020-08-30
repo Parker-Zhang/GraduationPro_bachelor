@@ -1,21 +1,13 @@
 joint:
-  names: [zero,first,second]
+  names: [zero,first,second,third,fourth]
 trajectory:
-  index: [wp1,wp2,wp3,wp4,wp5]
+  index: [wp1,wp2]
 #  index: [wp1]
   wp1:
-    pos: [0.0,0.0,0.0]
+    pos: [0.0,0.0,0.0,0.0,0.0]
     time_from_start: 0.2
   wp2:
-    pos: [-1.57,3.14,1.57]
+    pos: [-1.57,3.14,1.57,1.0,2.0]
     time_from_start: 0.4
-  wp3:
-    pos: [0,0,0]
-    time_from_start: 0.6
-  wp4:
-    pos: [1.57,0,0]
-    time_from_start: 0.8
-  wp5:
-    pos: [0,0,0]
-    time_from_start: 1
+
   
