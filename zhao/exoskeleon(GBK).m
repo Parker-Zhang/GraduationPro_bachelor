@@ -1,30 +1,30 @@
-%% å®ç‰©å®éªŒä¸€ ï¼ˆæ¨¡å‹æ˜¾ç¤ºï¼‰
+%% ÊµÎïÊµÑéÒ» £¨Ä£ĞÍÏÔÊ¾£©
 clear 
 clc
 close all
-% å˜é‡å£°æ˜
-alpha =0%å‰åä¼¸å±• æ­£
-beta =0;%æ²¿é¢ˆè‚©ä¸Šä¸‹ä¼¸å±• è´Ÿ
-gamma =0;% è´Ÿ
-coefficient = 10%1è¡¨ç¤ºå•ä½ 1m10 è¡¨ç¤ºå•ä½ dm ;100è¡¨ç¤ºå•ä½ cm ;1000è¡¨ç¤ºå•ä½mm
+% ±äÁ¿ÉùÃ÷
+alpha =0%Ç°ºóÉìÕ¹ Õı
+beta =0;%ÑØ¾±¼çÉÏÏÂÉìÕ¹ ¸º
+gamma =0;% ¸º
+coefficient = 10%1±íÊ¾µ¥Î» 1m10 ±íÊ¾µ¥Î» dm ;100±íÊ¾µ¥Î» cm ;1000±íÊ¾µ¥Î»mm
 A0 = [1.832343 0.556926 1.438875]*coefficient;
-C0 = [1.8342155;0.5480115;1.373666]*coefficient %æ‰‹è‡‚æœ«ç«¯åæ ‡
+C0 = [1.8342155;0.5480115;1.373666]*coefficient %ÊÖ±ÛÄ©¶Ë×ø±ê
 L = norm(A0-C0');
 V2 = [1.704463 0.52516 1.596931]*coefficient;
 F = [1.766782 0.466348  1.537818]*coefficient;
-%F V3 V4 V0 V1 åœ¨åæ ‡ç³»Oçš„è¡¨ç¤º
+%F V3 V4 V0 V1 ÔÚ×ø±êÏµOµÄ±íÊ¾
 A =[F/coefficient        ;
         1.742190 0.544417  1.538995;
         1.742190 0.546938  1.490152;
        1.891779 0.551402   1.591663;
        1.919727 0.567959  1.526999]*coefficient;
-%BV2 BV3 BV4 BV0 BV1 åœ¨åæ ‡ç³»Oçš„è¡¨ç¤º
+%BV2 BV3 BV4 BV0 BV1 ÔÚ×ø±êÏµOµÄ±íÊ¾
 oB =[1.847434 0.536718 1.392759;
         1.8929344 0.524473  1.385093;
         1.819922 0.562993  1.369919;
         1.861352 0.550960  1.381767;
          1.850785 0.569201 1.366971]*coefficient;
- Â± B2 B3 B4 B5 åœ¨åæ ‡ç³»Cçš„è¡¨ç¤º
+ ¡À B2 B3 B4 B5 ÔÚ×ø±êÏµCµÄ±íÊ¾
 cB = oB - kron(ones(5,1),C0');
 
 TA = transl(A0);
@@ -48,31 +48,31 @@ alpha = pi/4;
 % alpha = pi/6*sin(2*pi*k/Tspan)-pi/6;
 gamma = pi*sin(2*pi*k1/Tspan)+pi;
 
-% è®¡ç®—éƒ¨åˆ†
+% ¼ÆËã²¿·Ö
 cBT=cB';
 AT=A';
 
 T0=[ eye(3,3) ,A0';zeros(1,3),1];
-% T1è¡¨ç¤ºä¸­å¿ƒçš„ä½å§¿ å³ AcT
-% è¿™é‡Œçš„ T1å­˜åœ¨é—®é¢˜
+% T1±íÊ¾ÖĞĞÄµÄÎ»×Ë ¼´ AcT
+% ÕâÀïµÄ T1´æÔÚÎÊÌâ
 T1 = TA*trotz(gamma)*troty(beta)*trotx(alpha)*ATC;
 C1 = T1(1:3,end);
 C1_save = [C1_save C1];
 
 BT = homtrans(T1,cBT);
  
-%  è®¡ç®—ç»³çº¿çš„é•¿åº¦ A1B1
+%  ¼ÆËãÉşÏßµÄ³¤¶È A1B1
 ML = AT-BT;
     for i=1:1:5
         stringL(k1,i)=norm(ML(:,i));
     end
 stringL
 norm(A0-C0')
-% é›¶ä½çŠ¶æ€å„ç»³çº¿çš„é•¿åº¦ä¸º
+% ÁãÎ»×´Ì¬¸÷ÉşÏßµÄ³¤¶ÈÎª
 % 1.8027    2.1635    1.4407    2.1209    1.7425    dm
 
 
-%  ç”»å›¾éƒ¨åˆ†
+%  »­Í¼²¿·Ö
 trplot(T0,'frame','O','color','r');
 axis([-3*L+T0(1,end) 3*L+T0(1,end) -3*L+T0(2,end) 3*L+T0(2,end)  -3*L+T0(3,end) 3*L+T0(3,end) ]);
 hold on
@@ -80,7 +80,7 @@ trplot(T1,'frame','C','color','b');
  plot3(AT(1,:)',AT(2,:)',AT(3,:)','o','color','b','MarkerSize',10,'MarkerFaceColor','r');
  plot3(V2(1),V2(2),V2(3),'o','color','b','MarkerSize',10,'MarkerFaceColor','r');
  plot3(BT(1,:)',BT(2,:)',BT(3,:)','o','color','b','MarkerSize',10,'MarkerFaceColor','g');
-%  è¿›è¡Œè¿çº¿ Ai å’ŒBiè¿çº¿
+%  ½øĞĞÁ¬Ïß Ai ºÍBiÁ¬Ïß
 ABT =[AT BT];
 point_nAB=length(ABT);
 LinkAB=zeros(point_nAB,point_nAB);
@@ -89,17 +89,17 @@ for i=1:1:point_nAB/2
     LinkAB(point_nAB/2+i,i)=1;
 end
 gplot23D(LinkAB,ABT');
-% ç»˜åˆ¶Biä¹‹é—´çš„è¿çº¿
+% »æÖÆBiÖ®¼äµÄÁ¬Ïß
 LinkB = ones(5,5);
 LinkB = LinkB  -eye(5,5);
 LinkB(4,1)=0;
 LinkB(1,4)=0;
 gplot23D(LinkB,BT');
-% è¿æ¥OCä¸¤ç‚¹
+% Á¬½ÓOCÁ½µã
 OC =[A0' C1];
 plot3(OC(1,:)',OC(2,:)',OC(3,:)','color','k','LineWidth',4);
 plot3(C1_save(1,:)',C1_save(2,:)',C1_save(3,:)','*','color','r');
-%è¿æ¥ A1Fä¸¤ç‚¹
+%Á¬½Ó A1FÁ½µã
 A1F=[V2' F'];
 plot3(A1F(1,:)',A1F(2,:)',A1F(3,:)');
 hold off
@@ -113,15 +113,15 @@ t=1:1:loop_times*Tspan;
 figure(100),
 plot(t,stringL,'linewidth',1.1);
 % axis([1,50,10,24]);
-set(gca,'linewidth',1.1,'fontsize',14,'fontname','å®‹ä½“')
-xlabel('æ—¶é—´/\fontname{Times New Roman}unit');
-ylabel('ç»³é•¿/\fontname{Times New Roman}unit');
+set(gca,'linewidth',1.1,'fontsize',14,'fontname','ËÎÌå')
+xlabel('Ê±¼ä/\fontname{Times New Roman}unit');
+ylabel('Éş³¤/\fontname{Times New Roman}unit');
 legend('FB1', 'A2B2','A3B3','A4B4','A5B5','fontname','Times');
 % set (gca,'position',[0.1,0.12,0.7,0.8] );
-title('å„ç»³çº¿é•¿åº¦éšæ—¶é—´å˜åŒ–å›¾');
+title('¸÷ÉşÏß³¤¶ÈËæÊ±¼ä±ä»¯Í¼');
 
 motorR = 10/1000*coefficient;
-%ä»¥åˆå§‹çŠ¶æ€çš„é•¿åº¦ä¸ºåŸºå‡†
+%ÒÔ³õÊ¼×´Ì¬µÄ³¤¶ÈÎª»ù×¼
 motorTheta=zeros(loop_times*Tspan,5);
 for i=1:1:loop_times*Tspan
     motorTheta(i,:)=(stringL(i,:)-stringL(1,:))/motorR*180/pi;
@@ -130,15 +130,15 @@ end
 % motorTheta
 figure(200),
 plot(t,motorTheta,'linewidth',1.1);
-set(gca,'linewidth',1.1,'fontsize',14,'fontname','å®‹ä½“');
-title('å„èˆµæœºè½¬è§’éšæ—¶é—´å˜åŒ–å›¾');
-xlabel('æ—¶é—´/\fontname{Times New Roman}unit');
-ylabel('èˆµæœºè½¬è§’/\fontname{Times New Roman}Â°');
+set(gca,'linewidth',1.1,'fontsize',14,'fontname','ËÎÌå');
+title('¸÷¶æ»ú×ª½ÇËæÊ±¼ä±ä»¯Í¼');
+xlabel('Ê±¼ä/\fontname{Times New Roman}unit');
+ylabel('¶æ»ú×ª½Ç/\fontname{Times New Roman}¡ã');
 legend('A1', 'A2','A3','A4','A5','fontname','Times');
 % set (gca,'position',[0.1,0.12,0.7,0.8] );
 xlswrite('trajactory.xlsx',[motorTheta;stringL]);
 
-%% å®ç‰©è½¨è¿¹é…ç½®æ–‡ä»¶ç”Ÿæˆï¼Œæ—¶é—´è‡ªå®šä¹‰
+%% ÊµÎï¹ì¼£ÅäÖÃÎÄ¼şÉú³É£¬Ê±¼ä×Ô¶¨Òå
 clc
 fid = fopen('RealMotorTraOpti02.yaml','w');
 motorThetaTemp = motorTheta/180*pi;
@@ -206,7 +206,7 @@ end
 fclose(fid)
 
 
-%% å®ç‰©è½¨è¿¹é…ç½®æ–‡ä»¶ç”Ÿæˆï¼Œå¸¦é€Ÿåº¦
+%% ÊµÎï¹ì¼£ÅäÖÃÎÄ¼şÉú³É£¬´øËÙ¶È
 clc
 % clear
 % load('Tra811.mat')
@@ -268,7 +268,7 @@ for i=1:wayPointNum
 end
 fclose(fid)
 
-%% å®ç‰©è½¨è¿¹é…ç½®æ–‡ä»¶ç”Ÿæˆ,æ— é€Ÿåº¦
+%% ÊµÎï¹ì¼£ÅäÖÃÎÄ¼şÉú³É,ÎŞËÙ¶È
 clc
 % clear
 % load('Tra811.mat')
@@ -312,13 +312,13 @@ for i=1:wayPointNum
     fprintf(fid,'    time_from_start: %f\n',startTime);
 end
 fclose(fid)
-%% æ•°æ®å¤„ç†
+%% Êı¾İ´¦Àí
 % motorTheta = [radian0 radian1 radian2 radian3 radian4]
 clc
 clear
 close all
 filename='data/stateRecord17.txt';
-% æ—¶é—´æˆ³è®°å½•çš„æ˜¯nsec ,æ—¶é—´çš„å•ä½ä¸ºçº³ç§’ï¼Œ10-9
+% Ê±¼ä´Á¼ÇÂ¼µÄÊÇnsec ,Ê±¼äµÄµ¥Î»ÎªÄÉÃë£¬10-9
 [time,radian1,velocity1,current1,radian4,velocity4,current4,radian2,velocity2,current2,radian3,velocity3,current3,radian0,velocity0,current0]...
 =textread(filename,'%f %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d','delimiter',',');
 time1 = (time-time(1))/10^9;
@@ -327,7 +327,7 @@ filename2='data/d_traRecord17.txt';
 time2 = (time-time(1))/10^9;
 
 
-% è§’åº¦
+% ½Ç¶È
 figure(100),
 radian0=(radian0-radian0(1))*0.088;
 radian1=(radian1-radian1(1))*0.088;
@@ -336,11 +336,11 @@ radian3=(radian3-radian3(1))*0.088;
 radian4=(radian4-radian4(1))*0.088;
 
 hold on
-plot(time1,radian0', 'linewidth', 1.1,'color','#EDB120');
-plot(time1,radian1', 'linewidth', 1.1,'color','#0072BD');
-plot(time1,radian2', 'linewidth', 1.1,'color','#D95319');
-plot(time1,radian3', 'linewidth', 1.1,'color','#7E2F8E');
-plot(time1,radian4', 'linewidth', 1.1,'color','#77AC30');
+plot(time1,radian0', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
+plot(time1,radian1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
+plot(time1,radian2', 'linewidth', 1.1,'color',[0.9290 0.6940 0.1250]);
+plot(time1,radian3', 'linewidth', 1.1,'color',[0.4940 0.1840 0.5560]);
+plot(time1,radian4', 'linewidth', 1.1,'color',[0.4660 0.6740 0.1880]);
 
 dp1=(dp1)*0.088;
 dp4=(dp4)*0.088;
@@ -348,11 +348,11 @@ dp2=(dp2)*0.088;
 dp3=(dp3)*0.088;
 dp0=(dp0)*0.088;
 
-plot(time2,dp0', 'linewidth', 1.1,'linestyle','--','color','#EDB120');
-plot(time2,dp1', 'linewidth', 1.1,'linestyle','--','color','#0072BD');
-plot(time2,dp2', 'linewidth', 1.1,'linestyle','--','color','#D95319');
-plot(time2,dp3', 'linewidth', 1.1,'linestyle','--','color','#7E2F8E');
-plot(time2,dp4', 'linewidth', 1.1,'linestyle','--','color','#77AC30');
+plot(time2,dp0', 'linewidth', 1.1,'linestyle','--','color',[0 0.4470 0.7410]);
+plot(time2,dp1', 'linewidth', 1.1,'linestyle','--','color',[0.8500 0.3250 0.0980]);
+plot(time2,dp2', 'linewidth', 1.1,'linestyle','--','color',[0.9290 0.6940 0.1250]);
+plot(time2,dp3', 'linewidth', 1.1,'linestyle','--','color',[0.4940 0.1840 0.5560]);
+plot(time2,dp4', 'linewidth', 1.1,'linestyle','--','color',[0.4660 0.6740 0.1880]);
 
 
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
@@ -362,18 +362,18 @@ ylabel('Radian ') ;
 
 figure(200),
 hold on
-plot(time1,velocity0', 'linewidth', 1.1,'color','#EDB120');
-plot(time1,velocity1', 'linewidth', 1.1,'color','#0072BD');
-plot(time1,velocity2', 'linewidth', 1.1,'color','#D95319');
-plot(time1,velocity3', 'linewidth', 1.1,'color','#7E2F8E');
-plot(time1,velocity4', 'linewidth', 1.1,'color','#77AC30');
+plot(time1,velocity0', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
+plot(time1,velocity1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
+plot(time1,velocity2', 'linewidth', 1.1,'color',[0.9290 0.6940 0.1250]);
+plot(time1,velocity3', 'linewidth', 1.1,'color',[0.4940 0.1840 0.5560]);
+plot(time1,velocity4', 'linewidth', 1.1,'color',[0.4660 0.6740 0.1880]);
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') ;
 xlabel('Time')
 ylabel('Velocity ') ;
 
 
-% é€Ÿåº¦ç§¯åˆ†éªŒè¯ï¼Œç»“è®ºç»è¿‡éªŒè¯ï¼Œæ ¹æ®é€Ÿåº¦ç§¯åˆ†æ±‚è§£çš„ä½ç§»éœ€è¦ä¹˜ä»¥ä¸€ä¸ªç³»æ•°ï¼Œå› æ­¤å¯ä»¥ç”¨æ¥æŒ‡å¯¼è½¨è¿¹æ–‡ä»¶ç”Ÿæˆ
-% é€Ÿåº¦xæ—¶é—´ ç´¯åŠ 
+% ËÙ¶È»ı·ÖÑéÖ¤£¬½áÂÛ¾­¹ıÑéÖ¤£¬¸ù¾İËÙ¶È»ı·ÖÇó½âµÄÎ»ÒÆĞèÒª³ËÒÔÒ»¸öÏµÊı£¬Òò´Ë¿ÉÒÔÓÃÀ´Ö¸µ¼¹ì¼£ÎÄ¼şÉú³É
+% ËÙ¶ÈxÊ±¼ä ÀÛ¼Ó
 radian0_ = [];radian1_ = [];radian2_ = [];
 time_ = [];
 temp0 = 0;temp1 = 0;temp2 = 0;
@@ -397,29 +397,29 @@ for index=1:length(velocity0)-1
     
     time_ =[time_;t];
 end
-figure(201)
-hold on
-plot(time1,radian0', 'linewidth', 1.1,'color','#EDB120');
-plot(time_,radian0_', 'linewidth', 1.1,'LineStyle','--','color','#EDB120');
-plot(time1,radian1', 'linewidth', 1.1,'color','#0072BD');
-plot(time_,radian1_', 'linewidth', 1.1,'LineStyle','--','color','#0072BD');
-plot(time1,radian2', 'linewidth', 1.1,'color','#D95319');
-plot(time_,radian2_', 'linewidth', 1.1,'LineStyle','--','color','#D95319');
+% figure(201)
+% hold on
+% plot(time1,radian0', 'linewidth', 1.1,'color','#EDB120');
+% plot(time_,radian0_', 'linewidth', 1.1,'LineStyle','--','color','#EDB120');
+% plot(time1,radian1', 'linewidth', 1.1,'color','#0072BD');
+% plot(time_,radian1_', 'linewidth', 1.1,'LineStyle','--','color','#0072BD');
+% plot(time1,radian2', 'linewidth', 1.1,'color','#D95319');
+% plot(time_,radian2_', 'linewidth', 1.1,'LineStyle','--','color','#D95319');
 
 
 
 figure(300),
 hold on
-plot(time1,current0', 'linewidth', 1.1,'color','#EDB120');
-plot(time1,current1', 'linewidth', 1.1,'color','#0072BD');
-plot(time1,current2', 'linewidth', 1.1,'color','#D95319');
-plot(time1,current3', 'linewidth', 1.1,'color','#7E2F8E');
-plot(time1,current4', 'linewidth', 1.1,'color','#77AC30');
+plot(time1,current0', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
+plot(time1,current1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
+plot(time1,current2', 'linewidth', 1.1,'color',[0.9290 0.6940 0.1250]);
+plot(time1,current3', 'linewidth', 1.1,'color',[0.4940 0.1840 0.5560]);
+plot(time1,current4', 'linewidth', 1.1,'color',[0.4660 0.6740 0.1880]);
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
 xlabel('Time')
 ylabel('Current ') ;
 
- %% ç¤ºæ•™ç”»å›¾
+ %% Ê¾½Ì»­Í¼
  clc
 clear
 close all
@@ -431,7 +431,7 @@ filename='data/state05.txt';
  t=1:1:length(radian1);
 t=0.1*t  
      
- % è§’åº¦
+ % ½Ç¶È
 figure(100),
 radian0=(radian0-radian0(1))*0.088;
 radian1=(radian1-radian1(1))*0.088;
@@ -449,8 +449,8 @@ plot(t,radian4', 'linewidth', 1.1,'color','#77AC30')
 % fprintf(fid,'  names: [second,third,fourth,zero,first]\n');
 motorTheta = [radian2 radian3 radian4 radian0 radian1]
 
-%% ç¤ºæ•™è½¨è¿¹ä¼˜åŒ–
-% ä¼˜åŒ–çš„æ€è·¯ï¼šå»é™¤ä¸€äº›å¹³çš„ç‚¹ï¼Œç„¶åæœ€åçš„ç‚¹å›å½’åˆ°0
+%% Ê¾½Ì¹ì¼£ÓÅ»¯
+% ÓÅ»¯µÄË¼Â·£ºÈ¥³ıÒ»Ğ©Æ½µÄµã£¬È»ºó×îºóµÄµã»Ø¹éµ½0
  clc
 clear
 close all
@@ -462,7 +462,7 @@ filename='data/state03.txt';
 time_ = (time-time(1))/10^9;
 
      
- % è§’åº¦
+ % ½Ç¶È
 figure(100),
 radian0=(radian0-radian0(1))*0.088;
 radian1=(radian1-radian1(1))*0.088;
@@ -520,7 +520,7 @@ plot(t_new,radian4_new', 'linewidth', 1.1,'color','#77AC30')
 % plot( 1:length(radian3_new),radian3_new', 'linewidth', 1.1,'color','#7E2F8E');
 % plot( 1:length(radian4_new),radian4_new', 'linewidth', 1.1,'color','#77AC30') 
 
-%% è½¨è¿¹æ‹Ÿåˆ 5æ¬¡æ›²çº¿æ‹Ÿåˆ
+%% ¹ì¼£ÄâºÏ 5´ÎÇúÏßÄâºÏ
 
 % radian0_new(1)=0;
 % radian1_new(1)=0;
@@ -573,7 +573,7 @@ plot(t_new_,y4, 'linewidth', 1.1,'color','#77AC30')
 
 motorTheta = [y2' y3' y4' y0' y1'];
 
-% % å¯¹è½¨è¿¹è¿›è¡Œæ±‚å¯¼ï¼Œå¾—åˆ°é€Ÿåº¦å¤§å°
+% % ¶Ô¹ì¼£½øĞĞÇóµ¼£¬µÃµ½ËÙ¶È´óĞ¡
 % Vy1 = 5*k1(1)*t_new_.^4+4*k1(2)*t_new_.^3+3*k1(3)*t_new_.^2+k1(4)*t_new_+k1(5);
 % Vy2 = 5*k2(1)*t_new_.^4+4*k2(2)*t_new_.^3+3*k2(3)*t_new_.^2+k2(4)*t_new_+k2(5);
 % Vy3 = 5*k3(1)*t_new_.^4+4*k3(2)*t_new_.^3+3*k3(3)*t_new_.^2+k3(4)*t_new_+k3(5);
@@ -589,7 +589,7 @@ motorTheta = [y2' y3' y4' y0' y1'];
 % plot(t_new_,Vy4, 'linewidth', 1.1,'color','#77AC30') 
 % 
 % motorThetaVel = [Vy2' Vy3' Vy4' Vy0' Vy1'];
-%% æ›²çº¿æ‹Ÿåˆ 4æ¬¡ æ›²çº¿
+%% ÇúÏßÄâºÏ 4´Î ÇúÏß
 t_new = t_new;
 k1 = polyfit(t_new,radian1_new,4);
 k2 = polyfit(t_new,radian2_new,4);
@@ -615,7 +615,7 @@ motorTheta = [y2' y3' y4' y0' y1'];
 
 
 
-%% optitrack æ•°æ®å¤„ç†
+%% optitrack Êı¾İ´¦Àí
 clc
 clear
 close all
@@ -647,14 +647,14 @@ endPosSave_z = [];
 
 for i=1:length(index)
     
-    % ç»˜åˆ¶åˆšä½“ 1ï¼ˆæ”¯æ¶ï¼‰
+    % »æÖÆ¸ÕÌå 1£¨Ö§¼Ü£©
     rigidBody1.y = [Marker1.x(i);Marker2.x(i);Marker3.x(i)];
     rigidBody1.z = [Marker1.y(i);Marker2.y(i);Marker3.y(i)];
     rigidBody1.x = [Marker1.z(i);Marker2.z(i);Marker3.z(i)];
     figure(10);
     plot3(rigidBody1.x,rigidBody1.y,rigidBody1.z,'o','color','b','MarkerSize',10,'MarkerFaceColor','r');
     hold on
-    % ç»˜åˆ¶åˆšä½“2 ï¼ˆæ‰‹è‡‚è¿åŠ¨è½¨è¿¹ï¼‰
+    % »æÖÆ¸ÕÌå2 £¨ÊÖ±ÛÔË¶¯¹ì¼££©
     rigidBody2.y = [Marker4.x(i);Marker5.x(i);Marker6.x(i);Marker7.x(i)];
     rigidBody2.z = [Marker4.y(i);Marker5.y(i);Marker6.y(i);Marker7.y(i)];
     rigidBody2.x = [Marker4.z(i);Marker5.z(i);Marker6.z(i);Marker7.z(i)];
@@ -676,10 +676,10 @@ end
 % plot3(endPosSave_x,endPosSave_y,endPosSave_z,'*','color','r');
 
 
-%% èˆµæœºå¯¼çº³æ§åˆ¶æ¨¡æ‹Ÿ
+%% ¶æ»úµ¼ÄÉ¿ØÖÆÄ£Äâ
 clc
 clear
-% å®šä¹‰ç³»ç»Ÿçš„åŠ¨åŠ›å­¦æ–¹ç¨‹
+% ¶¨ÒåÏµÍ³µÄ¶¯Á¦Ñ§·½³Ì
 J = 0.1;
 b = 0.2;
 A=[0 1 ;
@@ -688,7 +688,7 @@ B = [0 1/J];
 
 Ts = 0.1;
 Tspan = 100;
-% å˜æˆç¦»æ•£ç³»ç»Ÿæ–¹ä¾¿æ±‚è§£
+% ±ä³ÉÀëÉ¢ÏµÍ³·½±ãÇó½â
 [Ad,Bd]=c2d(A,B,Ts);
 
 K1 = 0.1;
@@ -722,6 +722,223 @@ plot(t,x_save);
 figure(2),
 plot(t,u_save);
     
+
+%% ¶æ»úÁ¦±æÊ¶
+clc
+clear
+close all
+
+% Í¨¹ısprintf ÊµÏÖ×Ö·û´®µÄÆ´½Ó
+mass = [500 200];
+count = 1;
+for i=1:length(mass)
+    for j=1:7
+        clear time radian velocity current
+        filename = sprintf('data/0906/g%d_0%d.txt',mass(i),j);
+        [time,radian,velocity,current]...
+        =textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
+        start_index = 10;
+        time1 = time(start_index:end);
+        radian1 = radian(start_index:end);
+        velocity1 = velocity(start_index:end);
+        current1 = current(start_index:end);
+        data_info(count).m = mass(i);
+        data_info(count).v = j;
+        data_info(count).time = time1;
+        data_info(count).radian = radian1;
+        data_info(count).velocity = velocity1;
+        data_info(count).current = current1;
+        data_info(count).current_ave = mean(current1);
+        data_info(count).current_median = median(current1);
+        data_info(count)
+        count = count +1;
+        
+    end 
+end
+
+% filename='data/0906/g500_04.txt';
+% % Ê±¼ä´Á¼ÇÂ¼µÄÊÇnsec ,Ê±¼äµÄµ¥Î»ÎªÄÉÃë£¬10-9
+% [time,radian,velocity,current]...
+% =textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
+% 
+% start_index = 10;
+% time1 = time(start_index:end);
+% radian1 = radian(start_index:end);
+% velocity1 = velocity(start_index:end);
+% current1 = current(start_index:end);
+% 
+% 
+% time1 = (time1-time1(1))/10^9;
+% 
+% 
+% 
+% current_ave = mean(current1);
+% velocity_ave = mean(velocity1);
+% current_median=median(current1);
+
+
+
+
+% % ½Ç¶È
+% figure(100),
+% radian1=(radian1-radian1(1))*0.088;
+% 
+% hold on
+% plot(time1,radian1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
+% set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+% xlabel('Time')
+% ylabel('Radian ') ;
+% figure(200),
+% hold on
+% plot(time1,velocity1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
+% set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') ;
+% xlabel('Time')
+% ylabel('Velocity ') ;
+% figure(300),
+% hold on
+% plot(time1,current1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
+% set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+% xlabel('Time')
+% ylabel('Current ') ;
+
+%% 
+% ËÙ¶È unit 0.23 rev/min
+% theta(1) =     1.8672 N;
+clc
+mean_err_save =[];
+theta_save =[];
+
+K = 0.42; % N/unit
+unit_V = 0.23;  %rev/min
+g = 9.8;
+
+
+w1 = 1;
+w2 = 0;
+w3 = 0;
+
+hat_f = K*data_info(1).current+data_info(1).m*10^-3*g;    %½öÊÊºÏÓë½üËÆÔÈËÙ,ÔÈËÙÔË¶¯Ê±£¬Çı¶¯Á¦-ÖØÁ¦=Ä¦²ÁÁ¦£¨Ç£Òı£©£»ÏÂ·ÅµÄÇéĞÎ£ºÖØÁ¦-Çı¶¯Á¦=Ä¦²ÁÁ¦
+
+
+W = [w1*sign(data_info(1).current)+w3*sign(data_info(1).velocity) w2*sign(data_info(1).current) w3*(data_info(1).velocity).^2 w3*(data_info(1).velocity)];  %ËÙ¶ÈµÄµ¥Î»±ä³É rad/s
+
+theta = pinv(W)*hat_f;
+% theta_save=[theta_save theta];
+
+tau_c = theta(1);
+tau_s = theta(2);
+beta_1 = theta(3);
+beta_2 = theta(4);
+
+
+for i = 1:length(data_info)
+% data_info(1).current,data_info(1).velocity
+% ¼ì²é£¬´úÈëÁíÒ»×éÊı¾İ£¬¿´ÊÇ·ñ¶¯Æ½ºâ
+hat_f_ = K*data_info(i).current+data_info(i).m*10^-3*g;
+W = [w1*sign(data_info(i).current)+w3*sign(data_info(i).velocity) w2*sign(data_info(i).current) w3*(data_info(i).velocity*unit_V*2*pi/60).^2 w3*(data_info(i).velocity*unit_V*2*pi/60)];
+f = W*theta;
+err=hat_f_ - f;
+mean(err);
+mean_err_save=[mean_err_save mean(err)];
+end
+% min(abs(mean_err_save))
+mean_err_save
+theta
+
+%%
+m_ =[];
+current_ =[];
+dq =[];
+v_i =[10 20 40 60 80 100 120];
+K = 0.42; % N/unit
+g =9.8;
+for i=1:length(data_info)
+    m_ = [m_ ; data_info(i).m];
+    current_ =[current_ ; data_info(i).current_median];
+    if i<=7
+        dq  = [dq ; v_i(i)];
+    else
+        dq = [dq ; v_i(i-7)];
+    end
+end
+
+hat_f = -K*current_ - m_*10^-3*g;
+
+W_ = [sign(dq) dq];
+
+theta_ = pinv(W_)*hat_f;
+% theta_ =[1.8090 0.0363]';
+dq_ = -20:0.1:20;
+tau_f = theta_(1)*sign(dq_)+theta_(2)*dq_;
+plot(dq_,tau_f)
+axis([-20 20 -6 6])
+
+
+%% ±æÊ¶ÍâÁ¦
+clc
+clear
+close all
+
+
+% filename='data/stateRecord17.txt';
+% % Ê±¼ä´Á¼ÇÂ¼µÄÊÇnsec ,Ê±¼äµÄµ¥Î»ÎªÄÉÃë£¬10-9
+% [time,radian1,velocity1,current1,radian4,velocity4,current4,radian2,velocity2,current2,radian3,velocity3,current3,radian0,velocity0,current0]...
+% =textread(filename,'%f %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d','delimiter',',');
+
+filename='data/0906/g500_07.txt';
+[time,radian0,velocity0,current0]...
+=textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
+
+time1 = (time-time(1))/10^9;
+
+% ½Ç¶È
+figure(100),
+radian0=(radian0-radian0(1))*0.088;
+
+hold on
+plot(time1,radian0', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
+
+
+figure(200),
+hold on
+plot(time1,velocity0', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') ;
+xlabel('Time')
+ylabel('Velocity ') ;
+
+
+figure(300),
+hold on
+plot(time1,current0', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('Time')
+ylabel('Current ') ;
+
+
+% ÖÊÁ¿ºöÂÔ²»¼Æ£¬Ò²¾ÍÊÇ²»¿¼ÂÇ¼ÓËÙ¶ÈµÄÓ°Ïì,¶ÔÓÚ¾²Ö¹Çé¿öÏÂµÄÍâÁ¦»¹²»ÄÜ¹À¼Æ£¬ËÙ¶ÈÎª0£¬ÍâÁ¦=Çı¶¯Á¦-Ä¦²ÁÁ¦
+
+ theta_ =[1.8090 0.0363]';
+ K = 0.42;
+dq = velocity0;
+current =current0;
+W = [-sign(dq) -dq];
+tau_f= W*theta_;
+tau_e = -K*current-tau_f;
+
+figure(400),
+hold on
+plot(time1,tau_e', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('Time')
+ylabel('\tau_e ') ;
+
+figure(500)
+hold on
+plot(time1,tau_f', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('Time')
+ylabel('\tau_f ') ;
+
 
 
 
