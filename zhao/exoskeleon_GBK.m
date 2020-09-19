@@ -24,7 +24,7 @@ oB =[1.847434 0.536718 1.392759;
         1.819922 0.562993  1.369919;
         1.861352 0.550960  1.381767;
          1.850785 0.569201 1.366971]*coefficient;
- ± B2 B3 B4 B5 在坐标系C的表示
+ % B2 B3 B4 B5 在坐标系C的表示
 cB = oB - kron(ones(5,1),C0');
 
 TA = transl(A0);
@@ -336,11 +336,11 @@ radian3=(radian3-radian3(1))*0.088;
 radian4=(radian4-radian4(1))*0.088;
 
 hold on
-plot(time1,radian0', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
-plot(time1,radian1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
-plot(time1,radian2', 'linewidth', 1.1,'color',[0.9290 0.6940 0.1250]);
-plot(time1,radian3', 'linewidth', 1.1,'color',[0.4940 0.1840 0.5560]);
-plot(time1,radian4', 'linewidth', 1.1,'color',[0.4660 0.6740 0.1880]);
+plot(time1,radian0', 'linewidth', 1.1,'color','#EDB120');
+plot(time1,radian1', 'linewidth', 1.1,'color','#0072BD');
+plot(time1,radian2', 'linewidth', 1.1,'color','#D95319');
+plot(time1,radian3', 'linewidth', 1.1,'color','#7E2F8E');
+plot(time1,radian4', 'linewidth', 1.1,'color','#77AC30');
 
 dp1=(dp1)*0.088;
 dp4=(dp4)*0.088;
@@ -348,11 +348,11 @@ dp2=(dp2)*0.088;
 dp3=(dp3)*0.088;
 dp0=(dp0)*0.088;
 
-plot(time2,dp0', 'linewidth', 1.1,'linestyle','--','color',[0 0.4470 0.7410]);
-plot(time2,dp1', 'linewidth', 1.1,'linestyle','--','color',[0.8500 0.3250 0.0980]);
-plot(time2,dp2', 'linewidth', 1.1,'linestyle','--','color',[0.9290 0.6940 0.1250]);
-plot(time2,dp3', 'linewidth', 1.1,'linestyle','--','color',[0.4940 0.1840 0.5560]);
-plot(time2,dp4', 'linewidth', 1.1,'linestyle','--','color',[0.4660 0.6740 0.1880]);
+plot(time2,dp0', 'linewidth', 1.1,'linestyle','--','color','#EDB120');
+plot(time2,dp1', 'linewidth', 1.1,'linestyle','--','color','#0072BD');
+plot(time2,dp2', 'linewidth', 1.1,'linestyle','--','color','#D95319');
+plot(time2,dp3', 'linewidth', 1.1,'linestyle','--','color','#7E2F8E');
+plot(time2,dp4', 'linewidth', 1.1,'linestyle','--','color','#77AC30');
 
 
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
@@ -362,11 +362,11 @@ ylabel('Radian ') ;
 
 figure(200),
 hold on
-plot(time1,velocity0', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
-plot(time1,velocity1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
-plot(time1,velocity2', 'linewidth', 1.1,'color',[0.9290 0.6940 0.1250]);
-plot(time1,velocity3', 'linewidth', 1.1,'color',[0.4940 0.1840 0.5560]);
-plot(time1,velocity4', 'linewidth', 1.1,'color',[0.4660 0.6740 0.1880]);
+plot(time1,velocity0', 'linewidth', 1.1,'color','#EDB120');
+plot(time1,velocity1', 'linewidth', 1.1,'color','#0072BD');
+plot(time1,velocity2', 'linewidth', 1.1,'color','#D95319');
+plot(time1,velocity3', 'linewidth', 1.1,'color','#7E2F8E');
+plot(time1,velocity4', 'linewidth', 1.1,'color','#77AC30');
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') ;
 xlabel('Time')
 ylabel('Velocity ') ;
@@ -397,24 +397,24 @@ for index=1:length(velocity0)-1
     
     time_ =[time_;t];
 end
-% figure(201)
-% hold on
-% plot(time1,radian0', 'linewidth', 1.1,'color','#EDB120');
-% plot(time_,radian0_', 'linewidth', 1.1,'LineStyle','--','color','#EDB120');
-% plot(time1,radian1', 'linewidth', 1.1,'color','#0072BD');
-% plot(time_,radian1_', 'linewidth', 1.1,'LineStyle','--','color','#0072BD');
-% plot(time1,radian2', 'linewidth', 1.1,'color','#D95319');
-% plot(time_,radian2_', 'linewidth', 1.1,'LineStyle','--','color','#D95319');
+figure(201)
+hold on
+plot(time1,radian0', 'linewidth', 1.1,'color','#EDB120');
+plot(time_,radian0_', 'linewidth', 1.1,'LineStyle','--','color','#EDB120');
+plot(time1,radian1', 'linewidth', 1.1,'color','#0072BD');
+plot(time_,radian1_', 'linewidth', 1.1,'LineStyle','--','color','#0072BD');
+plot(time1,radian2', 'linewidth', 1.1,'color','#D95319');
+plot(time_,radian2_', 'linewidth', 1.1,'LineStyle','--','color','#D95319');
 
 
 
 figure(300),
 hold on
-plot(time1,current0', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
-plot(time1,current1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
-plot(time1,current2', 'linewidth', 1.1,'color',[0.9290 0.6940 0.1250]);
-plot(time1,current3', 'linewidth', 1.1,'color',[0.4940 0.1840 0.5560]);
-plot(time1,current4', 'linewidth', 1.1,'color',[0.4660 0.6740 0.1880]);
+plot(time1,current0', 'linewidth', 1.1,'color','#EDB120');
+plot(time1,current1', 'linewidth', 1.1,'color','#0072BD');
+plot(time1,current2', 'linewidth', 1.1,'color','#D95319');
+plot(time1,current3', 'linewidth', 1.1,'color','#7E2F8E');
+plot(time1,current4', 'linewidth', 1.1,'color','#77AC30');
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
 xlabel('Time')
 ylabel('Current ') ;
@@ -612,9 +612,6 @@ plot(t_new,y4, 'linewidth', 1.1,'color','#77AC30')
 
 motorTheta = [y2' y3' y4' y0' y1'];
 
-
-
-
 %% optitrack 数据处理
 clc
 clear
@@ -675,7 +672,6 @@ end
 % figure(20),
 % plot3(endPosSave_x,endPosSave_y,endPosSave_z,'*','color','r');
 
-
 %% 舵机导纳控制模拟
 clc
 clear
@@ -722,14 +718,15 @@ plot(t,x_save);
 figure(2),
 plot(t,u_save);
     
-
-%% 舵机力辨识
+%% 舵机力辨识——数据读取
 clc
 clear
 close all
 
 % 通过sprintf 实现字符串的拼接
-mass = [500 200];
+% 上升阶段
+mass = [500 200 100];
+goal_vel = -[10 20 40 60 80 100 120];
 count = 1;
 for i=1:length(mass)
     for j=1:7
@@ -743,7 +740,7 @@ for i=1:length(mass)
         velocity1 = velocity(start_index:end);
         current1 = current(start_index:end);
         data_info(count).m = mass(i);
-        data_info(count).v = j;
+        data_info(count).v = goal_vel(j);
         data_info(count).time = time1;
         data_info(count).radian = radian1;
         data_info(count).velocity = velocity1;
@@ -752,63 +749,71 @@ for i=1:length(mass)
         data_info(count).current_median = median(current1);
         data_info(count)
         count = count +1;
-        
     end 
 end
 
-% filename='data/0906/g500_04.txt';
-% % 时间戳记录的是nsec ,时间的单位为纳秒，10-9
-% [time,radian,velocity,current]...
-% =textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
-% 
-% start_index = 10;
-% time1 = time(start_index:end);
-% radian1 = radian(start_index:end);
-% velocity1 = velocity(start_index:end);
-% current1 = current(start_index:end);
-% 
-% 
-% time1 = (time1-time1(1))/10^9;
-% 
-% 
-% 
-% current_ave = mean(current1);
-% velocity_ave = mean(velocity1);
-% current_median=median(current1);
+mass_ = [200];
+for i = 1:1
+        for j=1:7
+        clear time radian velocity current
+        filename = sprintf('data/0906/dg%d_0%d.txt',mass_(i),j);
+        [time,radian,velocity,current]...
+        =textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
+        start_index = 10;
+        time1 = time(start_index:end);
+        radian1 = radian(start_index:end);
+        velocity1 = velocity(start_index:end);
+        current1 = current(start_index:end);
+        data_info(count).m = mass_(i);
+        data_info(count).v = -goal_vel(j);
+        data_info(count).time = time1;
+        data_info(count).radian = radian1;
+        data_info(count).velocity = velocity1;
+        data_info(count).current = current1;
+        data_info(count).current_ave = mean(current1);
+        data_info(count).current_median = median(current1);
+        data_info(count)
+        count = count +1;
+    end 
+end
 
 
 
+% save data_info
 
-% % 角度
-% figure(100),
-% radian1=(radian1-radian1(1))*0.088;
-% 
-% hold on
-% plot(time1,radian1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
-% set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
-% xlabel('Time')
-% ylabel('Radian ') ;
-% figure(200),
-% hold on
-% plot(time1,velocity1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
-% set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') ;
-% xlabel('Time')
-% ylabel('Velocity ') ;
-% figure(300),
-% hold on
-% plot(time1,current1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
-% set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
-% xlabel('Time')
-% ylabel('Current ') ;
+%% 求解K的大小
 
-%% 
+delta_m = [];
+delta_i = [];
+% 涉及到一个排列组合
+queue ={[0 1] [0 2] [1 2]};
+for j =1:3
+    for i = 1:7
+        temp = data_info(queue{j}(1)*7+i).m-data_info(queue{j}(2)*7+i).m;
+        delta_m = [delta_m temp];
+        temp = data_info(queue{j}(1)*7+i).current_median-data_info(queue{j}(2)*7+i).current_median;
+        delta_i = [delta_i temp];
+    end
+end
+K_ = pinv(delta_i')*delta_m';
+K = delta_m*10^-3*9.8/-delta_i  %计算结果： K=0.3887
+
+% 100 -3.5  300 -7  400 -10.5
+% 通过四次曲线拟合 K 与 I 的关系
+% K = 0.3769
+m_ = [0 100 300 400]*10^-3*9.8;
+i_ = -[0 -4 -7 -11];
+p=polyfit(i_,m_,1);
+p(1)
+
+%%  按照论文得到的摩擦力模型
 % 速度 unit 0.23 rev/min
 % theta(1) =     1.8672 N;
 clc
 mean_err_save =[];
 theta_save =[];
 
-K = 0.42; % N/unit
+K =  0.3769; % N/unit
 unit_V = 0.23;  %rev/min
 g = 9.8;
 
@@ -845,49 +850,44 @@ end
 mean_err_save
 theta
 
-%%
+%% 摩擦力模型辨识
 m_ =[];
 current_ =[];
 dq =[];
-v_i =[10 20 40 60 80 100 120];
-K = 0.42; % N/unit
+% K = 0.3769; % N/unit
 g =9.8;
 for i=1:length(data_info)
     m_ = [m_ ; data_info(i).m];
     current_ =[current_ ; data_info(i).current_median];
-    if i<=7
-        dq  = [dq ; v_i(i)];
-    else
-        dq = [dq ; v_i(i-7)];
-    end
+     dq  = [dq ; data_info(i).v];
 end
 
-hat_f = -K*current_ - m_*10^-3*g;
+hat_f = -K*current_ - m_*10^-3*g;   %得到摩擦力为正
 
-W_ = [sign(dq) dq];
+W_ = [-sign(dq) -dq];
 
-theta_ = pinv(W_)*hat_f;
+theta_ = pinv(W_)*hat_f
 % theta_ =[1.8090 0.0363]';
 dq_ = -20:0.1:20;
 tau_f = theta_(1)*sign(dq_)+theta_(2)*dq_;
 plot(dq_,tau_f)
 axis([-20 20 -6 6])
 
-
 %% 辨识外力
 clc
-clear
+% clear
 close all
 
 
-% filename='data/stateRecord17.txt';
-% % 时间戳记录的是nsec ,时间的单位为纳秒，10-9
-% [time,radian1,velocity1,current1,radian4,velocity4,current4,radian2,velocity2,current2,radian3,velocity3,current3,radian0,velocity0,current0]...
-% =textread(filename,'%f %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d','delimiter',',');
 
-filename='data/0906/g500_07.txt';
-[time,radian0,velocity0,current0]...
-=textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
+filename='data/stateRecord17.txt';
+% % 时间戳记录的是nsec ,时间的单位为纳秒，10-9
+[time,radian1,velocity1,current1,radian4,velocity4,current4,radian2,velocity2,current2,radian3,velocity3,current3,radian0,velocity0,current0]...
+=textread(filename,'%f %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d','delimiter',',');
+
+% filename='data/0906/dg200_02.txt';
+% [time,radian0,velocity0,current0]...
+% =textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
 
 time1 = (time-time(1))/10^9;
 
@@ -917,13 +917,15 @@ ylabel('Current ') ;
 
 % 质量忽略不计，也就是不考虑加速度的影响,对于静止情况下的外力还不能估计，速度为0，外力=驱动力-摩擦力
 
- theta_ =[1.8090 0.0363]';
- K = 0.42;
+ theta_ =[1.3660 0.0284]';
+ K = 0.3887;
 dq = velocity0;
 current =current0;
 W = [-sign(dq) -dq];
 tau_f= W*theta_;
 tau_e = -K*current-tau_f;
+tau_logic = tau_e>0;
+tau_e = tau_e.*tau_logic;
 
 figure(400),
 hold on
@@ -938,10 +940,6 @@ plot(time1,tau_f', 'linewidth', 1.1,'color',[0 0.4470 0.7410]);
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
 xlabel('Time')
 ylabel('\tau_f ') ;
-
-
-
-
 
 
 
