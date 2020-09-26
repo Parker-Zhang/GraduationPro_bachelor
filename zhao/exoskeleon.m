@@ -3,12 +3,12 @@ clear
 clc
 close all
 % 变量声明
-alpha =0%前后伸展 正
+alpha =0; %前后伸展 正
 beta =0;%沿颈肩上下伸展 负
 gamma =0;% 负
-coefficient = 10%1表示单位 1m10 表示单位 dm ;100表示单位 cm ;1000表示单位mm
+coefficient = 10; %1表示单位 1m; 10 表示单位 dm ;100表示单位 cm ;1000表示单位mm
 A0 = [1.832343 0.556926 1.438875]*coefficient;
-C0 = [1.8342155;0.5480115;1.373666]*coefficient %手臂末端坐标
+C0 = [1.8342155;0.5480115;1.373666]*coefficient;  %手臂末端坐标
 L = norm(A0-C0');
 V2 = [1.704463 0.52516 1.596931]*coefficient;
 F = [1.766782 0.466348  1.537818]*coefficient;
@@ -24,7 +24,7 @@ oB =[1.847434 0.536718 1.392759;
         1.819922 0.562993  1.369919;
         1.861352 0.550960  1.381767;
          1.850785 0.569201 1.366971]*coefficient;
- ± B2 B3 B4 B5 在坐标系C的表示
+ %B1 B2 B3 B4 B5 在坐标系C的表示
 cB = oB - kron(ones(5,1),C0');
 
 TA = transl(A0);
@@ -37,7 +37,7 @@ dalpha = pi/6/Tspan;
 dbeta = pi/6/Tspan;
 dgamma = 0;
 
-loop_times = 1
+loop_times = 1; 
 C1_save = [];
 
 for k1=1:1:loop_times*Tspan
@@ -138,11 +138,73 @@ legend('A1', 'A2','A3','A4','A5','fontname','Times');
 % set (gca,'position',[0.1,0.12,0.7,0.8] );
 xlswrite('trajactory.xlsx',[motorTheta;stringL]);
 
+%% 实物轨迹配置文件生成，速度求导产生
+clc
+% clear
+% load('Tra811.mat')
+fid = fopen('test.yaml','w');
+% motorTheta=motorTheta/180*pi;
+% motorTheta=motorTheta(1:3,:);
+motorThetaTemp = motorTheta/180*pi;
+motorThetaTemp = motorThetaTemp(1:10:end,:);    %每10步取一个点，加快运动速度
+motorVel = motorThetaVel(1:10:end,:)/180*pi;
+DataSize = size(motorThetaTemp);
+len = DataSize(1);
+motorNum = 5;
+wayPointNum = len;
+thetaData=motorThetaTemp(1:wayPointNum,1:motorNum);
+
+rowIndex = 1;
+colIndex = 1;
+startTime = 0;
+dTime = 0.02;
+fprintf(fid,'joint:\n');
+fprintf(fid,'  names: [second,third,fourth,zero,first]\n');
+fprintf(fid,'trajectory:\n');
+fprintf(fid,'  index: [');
+for i=1:(wayPointNum-1)
+    fprintf(fid,'wp%d,',i);
+end
+fprintf(fid,'wp%d]\n',wayPointNum);
+for i=1:wayPointNum
+    fprintf(fid,'  wp%d:\n',i);
+    fprintf(fid,'    pos: [');
+    for j=1:(motorNum-1)
+       % rowIndex,colIndex
+        fprintf(fid,'%f,',thetaData(rowIndex,colIndex));
+        colIndex=colIndex+1;
+    end
+    %rowIndex,colIndex
+    fprintf(fid,'%f]\n',thetaData(rowIndex,colIndex));
+    if rowIndex==1||rowIndex==wayPointNum
+        fprintf(fid,'    vel: [');
+        for j=1:(motorNum-1)
+           % rowIndex,colIndex
+            fprintf(fid,'0.0,');
+        end
+        fprintf(fid,'0.0]\n');
+    else
+        colIndex=1;
+        fprintf(fid,'    vel: [');
+        for j=1:(motorNum-1)
+           
+            fprintf(fid,'%f,',motorVel(rowIndex,colIndex));
+            colIndex=colIndex+1;
+        end
+        fprintf(fid,'%f]\n',motorVel(rowIndex,colIndex));
+    end
+    rowIndex=rowIndex+1;
+    colIndex = 1;
+    startTime = startTime+dTime;
+    fprintf(fid,'    time_from_start: %f\n',startTime);
+end
+fclose(fid)
+
 %% 实物轨迹配置文件生成，时间自定义
 clc
 fid = fopen('RealMotorTraOpti02.yaml','w');
 motorThetaTemp = motorTheta/180*pi;
-motorThetaTemp = [motorThetaTemp(1:10:250,:) motorThetaTemp(251:20:end,:) motorThetaTemp(end,:)];
+motorThetaTemp = [motorThetaTemp(1:10:250,:) ; motorThetaTemp(251:20:end,:) ; motorThetaTemp(end,:)];
 
 DataSize = size(motorThetaTemp);
 len = DataSize(1);
@@ -210,23 +272,24 @@ fclose(fid)
 clc
 % clear
 % load('Tra811.mat')
-fid = fopen('RealMotorTraOpti01.yaml','w');
+fid = fopen('RealMotorTraOpti10.yaml','w');
 % motorTheta=motorTheta/180*pi;
 % motorTheta=motorTheta(1:3,:);
 motorThetaTemp = motorTheta/180*pi;
 motorThetaTemp = motorThetaTemp(1:10:end,:);
 DataSize = size(motorThetaTemp);
 len = DataSize(1);
-motorNum = 5;
+motorNum = 1;
 wayPointNum = len;
-thetaData=motorThetaTemp(1:wayPointNum,1:end);
+thetaData=motorThetaTemp(1:wayPointNum,1:1);
 
 rowIndex = 1;
 colIndex = 1;
 startTime = 0;
 dTime = 0.02;
 fprintf(fid,'joint:\n');
-fprintf(fid,'  names: [second,third,fourth,zero,first]\n');
+% fprintf(fid,'  names: [second,third,fourth,zero,first]\n');
+fprintf(fid,'  names: [first]\n');
 % fprintf(fid,'  names: [zero,first,second,third,fourth]\n');
 fprintf(fid,'trajectory:\n');
 fprintf(fid,'  index: [');
@@ -312,17 +375,22 @@ for i=1:wayPointNum
     fprintf(fid,'    time_from_start: %f\n',startTime);
 end
 fclose(fid)
-%% 数据处理
+%% 数据处理(期望轨迹和实际轨迹)
 % motorTheta = [radian0 radian1 radian2 radian3 radian4]
-clc
+% clc
 clear
 close all
-filename='data/stateRecord17.txt';
+% filename='data/0906/g500_07.txt';
+%  filename='data/stateRecord17.txt';
+
+ filename='data/0925/0925_state06.txt';
 % 时间戳记录的是nsec ,时间的单位为纳秒，10-9
 [time,radian1,velocity1,current1,radian4,velocity4,current4,radian2,velocity2,current2,radian3,velocity3,current3,radian0,velocity0,current0]...
 =textread(filename,'%f %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d','delimiter',',');
 time1 = (time-time(1))/10^9;
-filename2='data/d_traRecord17.txt';
+
+% filename2='data/d_traRecord17.txt';
+filename2='data/0925/0925_dtra06.txt';
 [time,dp1,dp4,dp2,dp3,dp0]=textread(filename2,'%f %*d %*d %*d %*d %*d %d %d %d %d %d','delimiter',',');
 time2 = (time-time(1))/10^9;
 
@@ -340,7 +408,7 @@ plot(time1,radian0', 'linewidth', 1.1,'color','#EDB120');
 plot(time1,radian1', 'linewidth', 1.1,'color','#0072BD');
 plot(time1,radian2', 'linewidth', 1.1,'color','#D95319');
 plot(time1,radian3', 'linewidth', 1.1,'color','#7E2F8E');
-plot(time1,radian4', 'linewidth', 1.1,'color','#77AC30');
+plot(time1,radian4', 'linewidth', 1.1,'color','#77AC30')  
 
 dp1=(dp1)*0.088;
 dp4=(dp4)*0.088;
@@ -348,15 +416,16 @@ dp2=(dp2)*0.088;
 dp3=(dp3)*0.088;
 dp0=(dp0)*0.088;
 
+figure(101)
 plot(time2,dp0', 'linewidth', 1.1,'linestyle','--','color','#EDB120');
+hold on
 plot(time2,dp1', 'linewidth', 1.1,'linestyle','--','color','#0072BD');
 plot(time2,dp2', 'linewidth', 1.1,'linestyle','--','color','#D95319');
 plot(time2,dp3', 'linewidth', 1.1,'linestyle','--','color','#7E2F8E');
 plot(time2,dp4', 'linewidth', 1.1,'linestyle','--','color','#77AC30');
 
-
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
-xlabel('Time')
+xlabel('Time'); 
 ylabel('Radian ') ;
 
 
@@ -366,45 +435,35 @@ plot(time1,velocity0', 'linewidth', 1.1,'color','#EDB120');
 plot(time1,velocity1', 'linewidth', 1.1,'color','#0072BD');
 plot(time1,velocity2', 'linewidth', 1.1,'color','#D95319');
 plot(time1,velocity3', 'linewidth', 1.1,'color','#7E2F8E');
-plot(time1,velocity4', 'linewidth', 1.1,'color','#77AC30');
+plot(time1,velocity4', 'linewidth', 1.1,'color','#77AC30')  
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') ;
-xlabel('Time')
+xlabel('Time'); 
 ylabel('Velocity ') ;
 
 
 % 速度积分验证，结论经过验证，根据速度积分求解的位移需要乘以一个系数，因此可以用来指导轨迹文件生成
 % 速度x时间 累加
-radian0_ = [];radian1_ = [];radian2_ = [];
-time_ = [];
-temp0 = 0;temp1 = 0;temp2 = 0;
-coeff = 1.45;
-for index=1:length(velocity0)-1
-    dt = time1(index+1)-time1(index);
-    t = (time1(index+1)+time1(index))/2;
-%     temp0 = temp0+v_ave0*dt;
-
-    v_ave0 = (velocity0(index)+velocity0(index+1))/2;
-    temp0 = temp0+coeff*dt*v_ave0;
-    radian0_ = [radian0_ temp0];
-    
-    v_ave1 = (velocity1(index)+velocity1(index+1))/2;
-    temp1 = temp1+coeff*dt*v_ave1;
-    radian1_ = [radian1_ temp1];
-    
-    v_ave2 = (velocity2(index)+velocity2(index+1))/2;
-    temp2 = temp2+coeff*dt*v_ave2;
-    radian2_ = [radian2_ temp2];
-    
-    time_ =[time_;t];
-end
-figure(201)
-hold on
-plot(time1,radian0', 'linewidth', 1.1,'color','#EDB120');
-plot(time_,radian0_', 'linewidth', 1.1,'LineStyle','--','color','#EDB120');
-plot(time1,radian1', 'linewidth', 1.1,'color','#0072BD');
-plot(time_,radian1_', 'linewidth', 1.1,'LineStyle','--','color','#0072BD');
-plot(time1,radian2', 'linewidth', 1.1,'color','#D95319');
-plot(time_,radian2_', 'linewidth', 1.1,'LineStyle','--','color','#D95319');
+% radian1_ = [];
+% time_ = [];
+% temp1 = 0;
+% coeff = 1.45;
+% for index=1:length(velocity0)-1
+%     dt = time1(index+1)-time1(index);
+%     t = (time1(index+1)+time1(index))/2;
+% %     temp0 = temp0+v_ave0*dt;
+% 
+%     
+%     v_ave1 = (velocity1(index)+velocity1(index+1))/2;
+%     temp1 = temp1+coeff*dt*v_ave1;
+%     radian1_ = [radian1_ ; temp1];
+%     
+%     
+%     time_ =[time_;t];
+% end
+% figure(201)
+% hold on
+% plot(time1,radian1', 'linewidth', 1.1,'color','#EDB120');
+% plot(time_,radian1_', 'linewidth', 1.1,'LineStyle','--','color','#EDB120');
 
 
 
@@ -414,10 +473,38 @@ plot(time1,current0', 'linewidth', 1.1,'color','#EDB120');
 plot(time1,current1', 'linewidth', 1.1,'color','#0072BD');
 plot(time1,current2', 'linewidth', 1.1,'color','#D95319');
 plot(time1,current3', 'linewidth', 1.1,'color','#7E2F8E');
-plot(time1,current4', 'linewidth', 1.1,'color','#77AC30');
+plot(time1,current4', 'linewidth', 1.1,'color','#77AC30') 
 set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
-xlabel('Time')
+xlabel('Time'); 
 ylabel('Current ') ;
+
+%% 数据处理 测试期望轨迹的平滑度
+clc
+clear
+close all
+
+filename2='data/0925/RealMotorTraOpti02.txt';
+[time,dp1,dp4,dp2,dp3,dp0]=textread(filename2,'%f %*d %*d %*d %*d %*d %d %d %d %d %d','delimiter',',');
+time2 = (time-time(1))/10^9;
+
+dp1=(dp1)*0.088;
+dp4=(dp4)*0.088;
+dp2=(dp2)*0.088;
+dp3=(dp3)*0.088;
+dp0=(dp0)*0.088;
+
+figure(101)
+plot(time2,dp0', 'linewidth', 1.1,'linestyle','--','color','#EDB120');
+hold on
+plot(time2,dp1', 'linewidth', 1.1,'linestyle','--','color','#0072BD');
+plot(time2,dp2', 'linewidth', 1.1,'linestyle','--','color','#D95319');
+plot(time2,dp3', 'linewidth', 1.1,'linestyle','--','color','#7E2F8E');
+plot(time2,dp4', 'linewidth', 1.1,'linestyle','--','color','#77AC30');
+
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('Time'); 
+ylabel('Radian ') ;
+
 
  %% 示教画图
  clc
@@ -429,7 +516,7 @@ filename='data/state05.txt';
 =textread(filename,'%f %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d','delimiter',',');
 
  t=1:1:length(radian1);
-t=0.1*t  
+t=0.1*t;   
      
  % 角度
 figure(100),
@@ -444,7 +531,7 @@ plot(t,radian0', 'linewidth', 1.1,'color','#EDB120');
 plot(t,radian1', 'linewidth', 1.1,'color','#0072BD');
 plot(t,radian2', 'linewidth', 1.1,'color','#D95319');
 plot(t,radian3', 'linewidth', 1.1,'color','#7E2F8E');
-plot(t,radian4', 'linewidth', 1.1,'color','#77AC30')  
+plot(t,radian4', 'linewidth', 1.1,'color','#77AC30');   
 
 % fprintf(fid,'  names: [second,third,fourth,zero,first]\n');
 motorTheta = [radian2 radian3 radian4 radian0 radian1]
@@ -475,7 +562,7 @@ plot(time_,radian0', 'linewidth', 1.1,'color','#EDB120');
 plot(time_,radian1', 'linewidth', 1.1,'color','#0072BD');
 plot(time_,radian2', 'linewidth', 1.1,'color','#D95319');
 plot(time_,radian3', 'linewidth', 1.1,'color','#7E2F8E');
-plot(time_,radian4', 'linewidth', 1.1,'color','#77AC30')  
+plot(time_,radian4', 'linewidth', 1.1,'color','#77AC30');   
 
 % fprintf(fid,'  names: [second,third,fourth,zero,first]\n');
 
@@ -510,7 +597,7 @@ plot(t_new,radian0_new', 'linewidth', 1.1,'color','#EDB120');
 plot(t_new,radian1_new', 'linewidth', 1.1,'color','#0072BD');
 plot(t_new,radian2_new', 'linewidth', 1.1,'color','#D95319');
 plot(t_new,radian3_new', 'linewidth', 1.1,'color','#7E2F8E');
-plot(t_new,radian4_new', 'linewidth', 1.1,'color','#77AC30') 
+plot(t_new,radian4_new', 'linewidth', 1.1,'color','#77AC30');  
 
 
 
@@ -518,7 +605,7 @@ plot(t_new,radian4_new', 'linewidth', 1.1,'color','#77AC30')
 % plot( 1:length(radian1_new),radian1_new', 'linewidth', 1.1,'color','#0072BD');
 % plot( 1:length(radian2_new),radian2_new', 'linewidth', 1.1,'color','#D95319');
 % plot( 1:length(radian3_new),radian3_new', 'linewidth', 1.1,'color','#7E2F8E');
-% plot( 1:length(radian4_new),radian4_new', 'linewidth', 1.1,'color','#77AC30') 
+% plot( 1:length(radian4_new),radian4_new', 'linewidth', 1.1,'color','#77AC30');  
 
 %% 轨迹拟合 5次曲线拟合
 
@@ -536,12 +623,12 @@ t_new_ = [0];
 index = 200;
 for i =  1:length(radian1_new)-2
     if i <=index
-        t_new_ =[t_new_ t_new_(end)+0.02];
+        t_new_ =[t_new_ t_new_(end)+0.02/10];
     else
-         t_new_ =[t_new_ t_new_(end)+0.04];
+         t_new_ =[t_new_ t_new_(end)+0.04/10];
     end
 end
-t_new_ = [t_new_ t_new_(end)+0.1]
+t_new_ = [t_new_ t_new_(end)+0.1/10]
 
 
 k1 = polyfit(t_new_,radian1_new,5);
@@ -566,29 +653,31 @@ y4(1)=0;y4(end)=0;
 figure(300)
 plot(t_new_,y0, 'linewidth', 1.1,'color','#EDB120');
 hold on
-plot(t_new_,y1, 'linewidth', 1.1,'color','#0072BD');
-plot(t_new_,y2, 'linewidth', 1.1,'color','#D95319');
-plot(t_new_,y3, 'linewidth', 1.1,'color','#7E2F8E');
-plot(t_new_,y4, 'linewidth', 1.1,'color','#77AC30') 
+% plot(t_new_,y1, 'linewidth', 1.1,'color','#0072BD');
+% plot(t_new_,y2, 'linewidth', 1.1,'color','#D95319');
+% plot(t_new_,y3, 'linewidth', 1.1,'color','#7E2F8E');
+% plot(t_new_,y4, 'linewidth', 1.1,'color','#77AC30');  
 
 motorTheta = [y2' y3' y4' y0' y1'];
 
-% % 对轨迹进行求导，得到速度大小
-% Vy1 = 5*k1(1)*t_new_.^4+4*k1(2)*t_new_.^3+3*k1(3)*t_new_.^2+k1(4)*t_new_+k1(5);
-% Vy2 = 5*k2(1)*t_new_.^4+4*k2(2)*t_new_.^3+3*k2(3)*t_new_.^2+k2(4)*t_new_+k2(5);
-% Vy3 = 5*k3(1)*t_new_.^4+4*k3(2)*t_new_.^3+3*k3(3)*t_new_.^2+k3(4)*t_new_+k3(5);
-% Vy4 = 5*k4(1)*t_new_.^4+4*k4(2)*t_new_.^3+3*k4(3)*t_new_.^2+k4(4)*t_new_+k4(5);
-% Vy0 = 5*k0(1)*t_new_.^4+4*k0(2)*t_new_.^3+3*k0(3)*t_new_.^2+k0(4)*t_new_+k0(5);
-% 
+% 对轨迹进行求导，得到速度大小
+Vy1 = 5*k1(1)*t_new_.^4+4*k1(2)*t_new_.^3+3*k1(3)*t_new_.^2+k1(4)*t_new_+k1(5);
+Vy2 = 5*k2(1)*t_new_.^4+4*k2(2)*t_new_.^3+3*k2(3)*t_new_.^2+k2(4)*t_new_+k2(5);
+Vy3 = 5*k3(1)*t_new_.^4+4*k3(2)*t_new_.^3+3*k3(3)*t_new_.^2+k3(4)*t_new_+k3(5);
+Vy4 = 5*k4(1)*t_new_.^4+4*k4(2)*t_new_.^3+3*k4(3)*t_new_.^2+k4(4)*t_new_+k4(5);
+Vy0 = 5*k0(1)*t_new_.^4+4*k0(2)*t_new_.^3+3*k0(3)*t_new_.^2+k0(4)*t_new_+k0(5);
+
 % figure(400)
-% plot(t_new_,Vy0, 'linewidth', 1.1,'color','#EDB120');
-% hold on
+plot(t_new_,Vy0, 'linewidth', 1.1,'color','#EDB120');
+hold on
 % plot(t_new_,Vy1, 'linewidth', 1.1,'color','#0072BD');
 % plot(t_new_,Vy2, 'linewidth', 1.1,'color','#D95319');
 % plot(t_new_,Vy3, 'linewidth', 1.1,'color','#7E2F8E');
-% plot(t_new_,Vy4, 'linewidth', 1.1,'color','#77AC30') 
-% 
-% motorThetaVel = [Vy2' Vy3' Vy4' Vy0' Vy1'];
+% plot(t_new_,Vy4, 'linewidth', 1.1,'color','#77AC30');  
+
+motorThetaVel = [Vy2' Vy3' Vy4' Vy0' Vy1'];
+
+max_theta = [min(y0) min(y1) min(y2) min(y3) min(y4)]/0.088;
 %% 曲线拟合 4次 曲线
 t_new = t_new;
 k1 = polyfit(t_new,radian1_new,4);
@@ -608,11 +697,9 @@ hold on
 plot(t_new,y1, 'linewidth', 1.1,'color','#0072BD');
 plot(t_new,y2, 'linewidth', 1.1,'color','#D95319');
 plot(t_new,y3, 'linewidth', 1.1,'color','#7E2F8E');
-plot(t_new,y4, 'linewidth', 1.1,'color','#77AC30') 
+plot(t_new,y4, 'linewidth', 1.1,'color','#77AC30');  
 
 motorTheta = [y2' y3' y4' y0' y1'];
-
-
 
 
 %% optitrack 数据处理
@@ -684,7 +771,7 @@ J = 0.1;
 b = 0.2;
 A=[0 1 ;
         0 -b/J];
-B = [0 1/J];
+B = [0 ; 1/J];
 
 Ts = 0.1;
 Tspan = 100;
@@ -711,7 +798,7 @@ for i = 1:Tspan/Ts
     u_save = [u_save u];
     xd = desired_x(1) + u * K1;
     err = xd -x(1);
-    u = Kp * (xd - x(1)) + Kd * (err - last_err)
+    u = Kp * (xd - x(1)) + Kd * (err - last_err); 
     x_ = Ad*x + Bd*u;
     last_err = err;
     x = x_;
@@ -723,8 +810,260 @@ figure(2),
 plot(t,u_save);
     
 
+%% 舵机力辨识
+clc
+clear
+close all
+
+% 通过sprintf 实现字符串的拼接
+mass = [500 200];
+count = 1;
+for i=1:length(mass)
+    for j=1:7
+        clear time radian velocity current
+        filename = sprintf('data/0906/g%d_0%d.txt',mass(i),j);
+        [time,radian,velocity,current]...
+        =textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
+        start_index = 10;
+        time1 = time(start_index:end);
+        radian1 = radian(start_index:end);
+        velocity1 = velocity(start_index:end);
+        current1 = current(start_index:end);
+        data_info(count).m = mass(i);
+        data_info(count).v = j;
+        data_info(count).time = time1;
+        data_info(count).radian = radian1;
+        data_info(count).velocity = velocity1;
+        data_info(count).current = current1;
+        data_info(count).current_ave = mean(current1);
+        data_info(count).current_median = median(current1);
+        data_info(count)
+        count = count +1;
+        
+    end 
+end
+
+% filename='data/0906/g500_04.txt';
+% % 时间戳记录的是nsec ,时间的单位为纳秒，10-9
+% [time,radian,velocity,current]...
+% =textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
+% 
+% start_index = 10;
+% time1 = time(start_index:end);
+% radian1 = radian(start_index:end);
+% velocity1 = velocity(start_index:end);
+% current1 = current(start_index:end);
+% 
+% 
+% time1 = (time1-time1(1))/10^9;
+% 
+% 
+% 
+% current_ave = mean(current1);
+% velocity_ave = mean(velocity1);
+% current_median=median(current1);
 
 
+
+
+% % 角度
+% figure(100),
+% radian1=(radian1-radian1(1))*0.088;
+% 
+% hold on
+% plot(time1,radian1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
+% set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+% xlabel('Time')
+% ylabel('Radian ') ;
+% figure(200),
+% hold on
+% plot(time1,velocity1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
+% set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') ;
+% xlabel('Time')
+% ylabel('Velocity ') ;
+% figure(300),
+% hold on
+% plot(time1,current1', 'linewidth', 1.1,'color',[0.8500 0.3250 0.0980]);
+% set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+% xlabel('Time')
+% ylabel('Current ') ;
+
+%% 
+% 速度 unit 0.23 rev/min
+% theta(1) =     1.8672 N;
+clc
+mean_err_save =[];
+theta_save =[];
+
+K = 0.42; % N/unit
+unit_V = 0.23;  %rev/min
+g = 9.8;
+
+
+w1 = 1;
+w2 = 0;
+w3 = 0;
+
+hat_f = K*data_info(1).current+data_info(1).m*10^-3*g;    %仅适合与近似匀速,匀速运动时，驱动力-重力=摩擦力（牵引）；下放的情形：重力-驱动力=摩擦力
+
+
+W = [w1*sign(data_info(1).current)+w3*sign(data_info(1).velocity) w2*sign(data_info(1).current) w3*(data_info(1).velocity).^2 w3*(data_info(1).velocity)];  %速度的单位变成 rad/s
+
+theta = pinv(W)*hat_f;
+% theta_save=[theta_save theta];
+
+tau_c = theta(1);
+tau_s = theta(2);
+beta_1 = theta(3);
+beta_2 = theta(4);
+
+
+for i = 1:length(data_info)
+% data_info(1).current,data_info(1).velocity
+% 检查，代入另一组数据，看是否动平衡
+hat_f_ = K*data_info(i).current+data_info(i).m*10^-3*g;
+W = [w1*sign(data_info(i).current)+w3*sign(data_info(i).velocity) w2*sign(data_info(i).current) w3*(data_info(i).velocity*unit_V*2*pi/60).^2 w3*(data_info(i).velocity*unit_V*2*pi/60)];
+f = W*theta;
+err=hat_f_ - f;
+mean(err);
+mean_err_save=[mean_err_save mean(err)];
+end
+% min(abs(mean_err_save))
+mean_err_save
+theta
+
+%%
+m_ =[];
+current_ =[];
+dq =[];
+v_i =[10 20 40 60 80 100 120];
+K = 0.42; % N/unit
+g =9.8;
+for i=1:length(data_info)
+    m_ = [m_ ; data_info(i).m];
+    current_ =[current_ ; data_info(i).current_median];
+    if i<=7
+        dq  = [dq ; v_i(i)];
+    else
+        dq = [dq ; v_i(i-7)];
+    end
+end
+
+hat_f = -K*current_ - m_*10^-3*g;
+
+W_ = [sign(dq) dq];
+
+theta_ = pinv(W_)*hat_f;
+% theta_ =[1.8090 0.0363]';
+dq_ = -20:0.1:20;
+tau_f = theta_(1)*sign(dq_)+theta_(2)*dq_;
+plot(dq_,tau_f)
+axis([-20 20 -6 6])
+
+
+%% 辨识外力
+clc
+clear
+close all
+flag = 0;
+
+filename='data/0925/0925_state06.txt';
+% filename='data/stateRecord17.txt';
+
+% 时间戳记录的是nsec ,时间的单位为纳秒，10-9
+[time,radian1,velocity1,current1,radian4,velocity4,current4,radian2,velocity2,current2,radian3,velocity3,current3,radian0,velocity0,current0]...
+=textread(filename,'%f %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d %*s %*d %d %d %d','delimiter',',');
+flag = 1;
+
+
+% filename='data/0906/g100_02.txt';
+% [time,radian0,velocity0,current0]...
+% =textread(filename,'%f %*s %*d %d %d %d' ,'delimiter',',');
+
+time1 = (time-time(1))/10^9;
+
+% 角度
+figure(100),
+radian0=(radian0-radian0(1))*0.088;
+if flag==1
+    radian1=(radian1-radian1(1))*0.088;
+    radian2=(radian2-radian2(1))*0.088;
+    radian3=(radian3-radian3(1))*0.088;
+    radian4=(radian4-radian4(1))*0.088;
+end
+
+hold on
+plot(time1,radian0', 'linewidth', 1.1,'color','#EDB120');
+if flag ==1
+    plot(time1,radian1', 'linewidth', 1.1,'color','#0072BD');
+    plot(time1,radian2', 'linewidth', 1.1,'color','#D95319');
+    plot(time1,radian3', 'linewidth', 1.1,'color','#7E2F8E');
+    plot(time1,radian4', 'linewidth', 1.1,'color','#77AC30');
+end
+
+
+figure(200),
+hold on
+plot(time1,velocity0', 'linewidth', 1.1,'color','#EDB120');
+if flag ==1
+    plot(time1,velocity1', 'linewidth', 1.1,'color','#0072BD');
+    plot(time1,velocity2', 'linewidth', 1.1,'color','#D95319');
+    plot(time1,velocity3', 'linewidth', 1.1,'color','#7E2F8E');
+    plot(time1,velocity4', 'linewidth', 1.1,'color','#77AC30');
+end
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') ;
+xlabel('Time')
+ylabel('Velocity ') ;
+
+
+figure(300),
+hold on
+plot(time1,current0', 'linewidth', 1.1,'color','#EDB120');
+if flag ==1
+    plot(time1,current1', 'linewidth', 1.1,'color','#0072BD');
+    plot(time1,current2', 'linewidth', 1.1,'color','#D95319');
+    plot(time1,current3', 'linewidth', 1.1,'color','#7E2F8E');
+    plot(time1,current4', 'linewidth', 1.1,'color','#77AC30');
+end
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('Time')
+ylabel('Current ') ;
+
+
+% 质量忽略不计，也就是不考虑加速度的影响,对于静止情况下的外力还不能估计，速度为0，外力=驱动力-摩擦力
+
+ theta_ =[1.8090 0.0363]';
+ K = 0.42;
+ 
+ temp = []
+ 
+dq = [velocity0 velocity1 velocity2 velocity3 velocity4];
+current =[current0 current1 current2 current3 current4];
+W = [-sign(dq) -dq];
+tau_f= W*kron(theta_,eye(5));
+tau_e = -K*current-tau_f;
+
+figure(400),
+hold on
+plot(time1,tau_e(:,1)', 'linewidth', 1.1,'color','#EDB120');
+plot(time1,tau_e(:,2)', 'linewidth', 1.1,'color','#0072BD');
+plot(time1,tau_e(:,3)', 'linewidth', 1.1,'color','#D95319');
+plot(time1,tau_e(:,4)', 'linewidth', 1.1,'color','#7E2F8E');
+plot(time1,tau_e(:,5)', 'linewidth', 1.1,'color','#77AC30');
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('Time')
+ylabel('\tau_e ') ;
+
+figure(500)
+hold on
+plot(time1,tau_f(:,1)', 'linewidth', 1.1,'color','#EDB120');
+plot(time1,tau_f(:,2)', 'linewidth', 1.1,'color','#0072BD');
+plot(time1,tau_f(:,3)', 'linewidth', 1.1,'color','#D95319');
+plot(time1,tau_f(:,4)', 'linewidth', 1.1,'color','#7E2F8E');
+plot(time1,tau_f(:,5)', 'linewidth', 1.1,'color','#77AC30');
+set(gca, 'linewidth', 1.1, 'fontsize', 16, 'fontname', 'times') 
+xlabel('Time')
+ylabel('\tau_f ') ;
 
 
 
